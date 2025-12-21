@@ -1,0 +1,134 @@
+/* Header */
+.header {
+  position: fixed;
+  width: 100%;
+  z-index: 99;
+  background: white;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1460px;
+  margin: 0 auto;
+  padding: 20px 40px;
+  gap: 15px;
+}
+
+.header-left {
+  font-family: "Noto Serif", serif;
+  font-size: 16px;
+}
+
+.header-logo-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.header-logo {
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+
+/* 모바일용 언어 토글 - 데스크탑에서 숨김 */
+.header-lang-toggle-mobile {
+  display: none;
+  text-decoration: none;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+  transition: color 0.3s ease;
+}
+
+/* 언어 토글 (nav 안) */
+.header-lang-toggle {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.header-nav a {
+  text-decoration: none;
+  font-size: 16px;
+  text-transform: lowercase;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+/* Home 페이지 스타일 (기존 유지) */
+.header-nav-home a,
+.header-container-home .header-lang-toggle {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.header-nav-home a:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* 다른 페이지 스타일 */
+.header-nav-other a {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+.header-nav-other a.active {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.header-nav-other a:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* 반응형 디자인 - 모바일 */
+@media (max-width: 600px) {
+  .header-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 10px 0;
+    padding: 15px 25px;
+  }
+
+  .header-left {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .header-logo {
+    font-size: 14px;
+  }
+
+  /* 모바일용 언어 토글 표시 */
+  .header-lang-toggle-mobile {
+    display: block;
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 14px;
+  }
+
+  .header-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    gap: 30px;
+  }
+
+  .header-nav a {
+    font-size: 14px;
+  }
+
+  /* nav 안의 언어 토글 숨김 */
+  .header-nav .header-lang-toggle {
+    display: none;
+  }
+}

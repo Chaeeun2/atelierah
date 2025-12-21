@@ -1,21 +1,32 @@
-import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { LanguageProvider } from './contexts/LanguageContext'
+import ScrollToTop from './components/ScrollToTop'
+import Home from './pages/Home'
+import About from './pages/About'
+import Works from './pages/Works'
+import ProjectDetail from './pages/ProjectDetail'
+import Press from './pages/Press'
+import PressDetail from './pages/PressDetail'
+import Contact from './pages/Contact'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Atelier AH</h1>
-        <p>React 프로젝트가 성공적으로 설정되었습니다!</p>
-        <button onClick={() => setCount((count) => count + 1)}>
-          클릭 횟수: {count}
-        </button>
-      </header>
-    </div>
+    <LanguageProvider>
+      <Router>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/works" element={<Works />} />
+          <Route path="/works/:id" element={<ProjectDetail />} />
+          <Route path="/press" element={<Press />} />
+          <Route path="/press/:id" element={<PressDetail />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </Router>
+    </LanguageProvider>
   )
 }
 
 export default App
-

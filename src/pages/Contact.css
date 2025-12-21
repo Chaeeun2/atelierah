@@ -1,0 +1,203 @@
+.contact {
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-container {
+  max-width: 1460px;
+  margin: 0 auto;
+  padding: 160px 40px 80px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+/* 왼쪽: 설명 및 연락처 */
+.contact-left {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+}
+
+.contact-description {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  white-space: pre-line;
+  word-break: keep-all;
+}
+
+/* 국문 스타일 */
+.contact-description-ko {
+  font-family: Pretendard, sans-serif;
+  line-height: 1.7;
+}
+
+/* 영문 스타일 */
+.contact-description-en {
+  font-family: "Barlow", sans-serif;
+  line-height: 1.4;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.contact-info p,
+.contact-info a {
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.35);
+  margin: 0;
+  font-family: "Barlow", sans-serif, Pretendard;
+  text-decoration: none;
+  display: block;
+  transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* 오른쪽: 컨택 폼 */
+.contact-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.contact-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-form-group label {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: "Barlow", sans-serif;
+}
+
+.contact-form-group input,
+.contact-form-group textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.8);
+  background-color: #f8f8f7;
+  border: none;
+  outline: none;
+  font-family: Pretendard;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.contact-form-group input:focus,
+.contact-form-group textarea:focus {
+  border-bottom-color: rgba(0, 0, 0, 0.4);
+  background-color: #f0f0ef;
+}
+
+.contact-form-group textarea {
+  resize: vertical;
+  min-height: 300px;
+}
+
+.contact-form-submit {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.contact-form-submit button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  padding: 0;
+  font-family: "Barlow", sans-serif;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  transition: color 0.3s ease;
+}
+
+.contact-form-submit button:hover {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.contact-form-submit button:disabled {
+  color: rgba(0, 0, 0, 0.3);
+  cursor: not-allowed;
+}
+
+/* 푸터 */
+.contact-footer {
+  text-align: center;
+  padding: 30px 40px;
+  max-width: 1460px;
+  margin: 0 auto;
+}
+
+.contact-footer p {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 115px 25px 60px;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 70px;
+  }
+
+  .contact-left {
+    gap: 50px;
+  }
+
+  .contact-footer {
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-description {
+    font-size: 12px;
+  }
+  .contact-info a,
+  .contact-info p {
+    font-size: 12px;
+  }
+
+  .contact-form-group label,
+  .contact-form-group input,
+  .contact-form-group textarea {
+    font-size: 12px;
+  }
+
+  .contact-form-submit button {
+    font-size: 14px;
+  }
+
+  .contact-footer {
+    padding: 20px;
+  }
+
+  .contact-footer p {
+    font-size: 11px;
+  }
+}

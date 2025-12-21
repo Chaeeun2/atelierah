@@ -1,0 +1,19 @@
+/* 페이드인 애니메이션 */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* transition은 ready 상태가 되면 활성화 */
+.fade-in-up.ready {
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+/* 애니메이션 활성화 상태 */
+.fade-in-up.ready.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

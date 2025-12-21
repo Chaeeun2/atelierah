@@ -1,0 +1,456 @@
+.project-detail {
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding: 0;
+  margin: 0;
+}
+
+.project-detail-container {
+  max-width: 1460px;
+  margin: 0 auto;
+  padding: 115px 40px;
+}
+
+/* 메인 이미지 슬라이더 */
+.project-detail-main-slider-component {
+  height: calc(100vh - 240px);
+  padding: 0 0 50px 0;
+}
+
+.project-detail-main-slider-component .image-slider-container {
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.project-detail-main-slider-component .image-slider-indicators {
+  display: none;
+}
+
+/* 프로젝트 이미지들 */
+.project-detail-images {
+  margin-bottom: 10px;
+}
+
+.project-detail-images-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.project-detail-images-grid-1 {
+  grid-template-columns: 1fr;
+}
+
+.project-detail-images-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.project-detail-images-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.project-detail-image-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.project-detail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 프로젝트 설명 */
+.project-detail-description {
+  margin-bottom: 60px;
+  display: flex;
+}
+
+.project-detail-description-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: calc(50% + 35px);
+}
+
+.project-detail-description-spacer {
+  width: calc(50% - 35px);
+  height: 100%;
+}
+
+.project-detail-description-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  padding: 8px;
+}
+
+.project-detail-description-toggle img {
+  width: 9px;
+  height: 100%;
+}
+
+.project-detail-description-toggle.expanded {
+  transform: rotate(180deg);
+}
+
+.project-detail-description-toggle-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.project-detail-description-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(0, 0, 0, 0.6);
+  white-space: pre-line;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  max-height: 3.6em; /* 2줄 높이 (14px * 1.8 * 2) */
+  transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 1;
+  word-break: keep-all;
+  text-overflow: ellipsis;
+}
+
+.project-detail-description-text.expanded {
+  max-height: 2000px; /* 충분히 큰 값 */
+}
+
+.project-detail-description-text-ko {
+  font-family: Pretendard, sans-serif;
+}
+
+.project-detail-description-text-en {
+  font-family: "Barlow", sans-serif;
+  line-height: 1.5;
+}
+
+/* 프로젝트 상세 정보 - 2단 레이아웃 */
+.project-detail-info {
+  margin-bottom: 60px;
+}
+
+.project-detail-info.fade-in-up.ready {
+  transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+    margin-bottom 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-detail-info-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  align-items: flex-end;
+}
+
+.project-detail-info-sketch-column {
+  width: calc(50% - 30px);
+  flex-shrink: 0;
+  align-self: flex-end;
+  position: relative;
+}
+
+.project-detail-info-sketch-first {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-detail-info-sketch-expand {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+}
+
+.project-detail-info-sketch-column:hover .project-detail-info-sketch-expand {
+  max-height: 5000px;
+}
+
+.project-detail-info-sketch-rest {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  margin-top: 8px;
+}
+
+.project-detail-info-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: calc(50% + 30px);
+}
+
+.project-detail-info-title {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+  margin: 0 0 24px 0;
+}
+
+.project-detail-info-category {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 1.4;
+  text-transform: lowercase;
+}
+
+.project-detail-info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  margin-bottom: 24px;
+}
+
+.project-detail-info-group:last-child {
+  margin-bottom: 0;
+}
+
+.project-detail-info-item {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: baseline;
+  line-height: 1.6;
+}
+
+.project-detail-info-label {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+.project-detail-info-value {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.project-detail-info-text-ko {
+  font-family: "Barlow", sans-serif;
+}
+
+.project-detail-info-text-en {
+  font-family: "Barlow", sans-serif;
+}
+
+/* 레이아웃 섹션 - 왼쪽 빈칸, 오른쪽 레이아웃 이미지 */
+.project-detail-layout {
+  margin-bottom: 10px;
+}
+
+.project-detail-layout-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+}
+
+.project-detail-layout-empty {
+  width: 50%;
+  flex-shrink: 0;
+}
+
+.project-detail-layout-content {
+  width: 50%;
+  flex-shrink: 0;
+}
+
+.project-detail-layout-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.project-detail-layout-slider {
+  width: 100%;
+  padding: 0;
+}
+
+.project-detail-layout-slider .image-slider-container {
+  aspect-ratio: 1 / 1;
+}
+
+.project-detail-layout-slider .image-slider-indicators {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
+
+/* 뒤로가기 버튼 */
+.project-detail-back {
+  margin-bottom: 40px;
+}
+
+.project-detail-back-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  padding: 0;
+  font-family: "Barlow", sans-serif;
+  transition: color 0.3s ease;
+}
+
+.project-detail-back-button:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.project-detail-footer {
+  text-align: center;
+  padding: 30px 40px;
+  max-width: 1460px;
+  margin: 0 auto;
+}
+
+.project-detail-footer p {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+
+/* 모바일 스케치 이미지 (메인 슬라이더 아래) - 기본적으로 숨김 */
+.project-detail-mobile-sketch {
+  display: none;
+}
+
+.project-detail-mobile-sketch-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .project-detail-container {
+    padding: 120px 25px 60px 25px;
+  }
+
+  .project-detail-main-slider-component {
+    height: 33dvh;
+    padding: 0 0 10px 0;
+  }
+
+  .project-detail-mobile-sketch-image {
+    height: 33dvh;
+    object-fit: contain;
+  }
+
+  .project-detail-description-spacer {
+    display: none;
+  }
+
+  .project-detail-description-wrapper {
+    width: 100%;
+    gap: 5px;
+  }
+
+  .project-detail-description-text-ko {
+    line-height: 1.7;
+  }
+
+  .project-detail-description-text-en {
+    line-height: 1.4;
+  }
+
+  .project-detail-description-text {
+    font-size: 13px;
+  }
+
+  /* 모바일에서 섹션 순서 조정을 위한 flex 설정 */
+  .project-detail-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 모바일에서 메인 슬라이더 아래 스케치 이미지 표시 */
+  .project-detail-mobile-sketch {
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  /* 모바일 섹션 순서: 대표이미지-스케치-작품설명-레이아웃-상세정보-상세이미지 */
+  .project-detail-main-slider {
+    order: 1;
+  }
+
+  .project-detail-mobile-sketch {
+    order: 2;
+  }
+
+  .project-detail-description {
+    order: 3;
+    margin-bottom: 80px;
+  }
+
+  .project-detail-layout {
+    order: 4;
+  }
+
+  .project-detail-info {
+    order: 5;
+  }
+
+  .project-detail-images {
+    order: 6;
+  }
+
+  /* 모바일에서 스케치 이미지 숨김 */
+  .project-detail-info-sketch-column {
+    display: none;
+  }
+
+  /* 스케치 이미지 숨김에 따른 텍스트 영역 조정 */
+  .project-detail-info-text {
+    width: 100%;
+  }
+
+  /* 레이아웃 왼쪽 공백 제거 */
+  .project-detail-layout-empty {
+    display: none;
+  }
+
+  .project-detail-layout-content {
+    width: 100%;
+  }
+
+  .project-detail-info-title,
+  .project-detail-info-category,
+  .project-detail-info-label,
+  .project-detail-info-value {
+    font-size: 13px;
+  }
+
+  .project-detail-info {
+    margin-bottom: 100px;
+  }
+
+  .project-detail-images-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .project-detail-footer {
+    padding: 20px;
+  }
+
+  .project-detail-footer p {
+    font-size: 11px;
+  }
+}

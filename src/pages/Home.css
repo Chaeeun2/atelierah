@@ -1,0 +1,261 @@
+.home {
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+/* Splash Screen */
+.home-splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.home-splash.fade-out {
+  opacity: 0;
+}
+
+.home-splash-text {
+  font-family: "Noto Serif", serif;
+  font-size: 32px;
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin: 0;
+  padding: 0;
+}
+
+.home-main-container {
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+/* Horizontal Line */
+.home-horizontal-line {
+  width: 100%;
+  max-width: 1460px;
+  margin: 30px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 40px;
+  margin-top: 14vh;
+}
+
+.home-horizontal-line-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Description */
+.home-description {
+  text-align: center;
+  padding: 40px 20px;
+  margin: 0 auto;
+  max-width: 1460px;
+  margin-bottom: 1vh;
+}
+
+.home-description p {
+  font-size: 16px;
+  font-family: "Noto Serif", serif;
+  color: rgba(0, 0, 0, 0.5);
+  letter-spacing: -0.01em;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* Image Grid */
+.home-image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 150px 100px;
+  padding: 40px;
+  max-width: 1460px;
+  margin: 100px auto;
+}
+
+.home-image-item {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.home-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+  border: 1px dashed #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* 실제 이미지가 들어갈 때 사용할 스타일 */
+.home-image-item img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Sketch 타입: contain */
+.home-image-item-sketch img {
+  object-fit: contain;
+}
+
+/* Photo 타입: cover (overflow hidden은 이미 .home-image-item에 적용됨) */
+.home-image-item-photo img {
+  object-fit: cover;
+}
+
+/* Footer */
+.home-footer {
+  text-align: center;
+  padding: 30px 40px;
+  max-width: 1460px;
+  margin: 0 auto;
+}
+
+.home-footer p {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+
+/* Mobile Slider - 데스크탑에서 숨김 */
+.home-mobile-slider {
+  display: none;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .home-splash-text {
+    font-size: 28px;
+  }
+
+  .home-image-grid {
+    gap: 80px 50px;
+  }
+
+  .home-description {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .home-splash-text {
+    font-size: 24px;
+  }
+
+  .home-horizontal-line {
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    margin-top: 22dvh;
+  }
+
+  .home-horizontal-line img {
+    width: 250%;
+  }
+
+  .home-main-container {
+    height: 100dvh;
+  }
+
+  .home-description p {
+    font-size: 11px;
+  }
+
+  .home-description {
+    margin-bottom: 7dvh;
+  }
+
+  .home-slider {
+    padding: 50px 20px 20px 20px;
+  }
+
+  /* 모바일에서 그리드 숨기고 슬라이더 표시 */
+  .home-image-grid {
+    display: none;
+  }
+
+  .home-mobile-slider {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    padding: 120px 0 120px 0;
+    cursor: grab;
+  }
+
+  .home-mobile-slider:active {
+    cursor: grabbing;
+  }
+
+  .home-mobile-slider-wrapper {
+    display: flex;
+    padding-left: 20vw;
+  }
+
+  .home-mobile-slide {
+    flex: 0 0 60vw;
+    width: 60vw;
+  }
+
+  .home-mobile-slide-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 15px;
+  }
+
+  .home-mobile-slide-sketch {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .home-mobile-slide-sketch img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .home-mobile-slide-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+  }
+
+  .home-mobile-slide-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .home-footer {
+    padding: 20px 25px;
+  }
+
+  .home-footer p {
+    font-size: 11px;
+  }
+}

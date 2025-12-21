@@ -1,0 +1,67 @@
+import { useNavigate } from 'react-router-dom'
+import { useLanguage } from '../contexts/LanguageContext'
+import Header from '../components/Header'
+import FadeInUp from '../components/FadeInUp'
+import { pressItems } from '../data/press'
+import './Press.css'
+
+function Press() {
+  const navigate = useNavigate()
+  const { language } = useLanguage()
+
+  const handlePressClick = (item) => {
+    if (item.type === 'detail') {
+      // 상세페이지로 이동
+      navigate(`/press/${item.id}`)
+    } else if (item.type === 'link' && item.link) {
+      // 외부 링크로 이동
+      window.open(item.link, '_blank', 'noopener,noreferrer')
+    }
+  }
+
+  const isClickable = (item) => {
+    return item.type === 'detail' || (item.type === 'link' && item.link)
+  }
+
+  return (
+    <div className="press">
+      <Header />
+
+      <div className="press-container">
+        <FadeInUp className="press-grid">
+          {[...pressItems].reverse().map((item, index) => (
+            <FadeInUp 
+              key={item.id} 
+              className="press-item"
+              delay={index * 100}
+            >
+              <div 
+                className="press-image-wrapper"
+                onClick={() => handlePressClick(item)}
+                style={{ cursor: isClickable(item) ? 'pointer' : 'default' }}
+              >
+                <img 
+                  src={item.image} 
+                  alt={item.media}
+                  className="press-image"
+                />
+              </div>
+              <div className="press-caption">
+                <span className="press-media">{item.media}</span>
+                <span className="press-project">
+                  {language === 'ko' ? item.project.ko : item.project.en}
+                </span>
+              </div>
+            </FadeInUp>
+          ))}
+        </FadeInUp>
+      </div>
+
+      <footer className="press-footer">
+        <p>©2025 by atelier ah</p>
+      </footer>
+    </div>
+  )
+}
+
+export default Press
