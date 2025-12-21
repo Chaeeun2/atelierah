@@ -1,5 +1,5 @@
 .press {
-  min-height: 100vh;
+  min-height: 100dvh;
   background-color: #ffffff;
   padding: 0;
   margin: 0;
@@ -18,6 +18,9 @@
 }
 
 .press-item {
+}
+
+.press-item-content {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -80,7 +83,7 @@
     gap: 80px 30px;
   }
 
-  .press-item {
+  .press-item-content {
     gap: 15px;
   }
 }
@@ -109,6 +112,9 @@
 
   .press-footer {
     padding: 20px;
+  }
+
+  .press-footer p {
     font-size: 11px;
   }
 }

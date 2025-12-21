@@ -36,21 +36,23 @@ function Press() {
               delay={index * 100}
             >
               <div 
-                className="press-image-wrapper"
+                className="press-item-content"
                 onClick={() => handlePressClick(item)}
                 style={{ cursor: isClickable(item) ? 'pointer' : 'default' }}
               >
-                <img 
-                  src={item.image} 
-                  alt={item.media}
-                  className="press-image"
-                />
-              </div>
-              <div className="press-caption">
-                <span className="press-media">{item.media}</span>
-                <span className="press-project">
-                  {language === 'ko' ? item.project.ko : item.project.en}
-                </span>
+                <div className="press-image-wrapper">
+                  <img 
+                    src={item.image} 
+                    alt={item.media}
+                    className="press-image"
+                  />
+                </div>
+                <div className="press-caption">
+                  <span className="press-media">{item.media}</span>
+                  <span className="press-project">
+                    {language === 'ko' ? item.project.ko : item.project.en}
+                  </span>
+                </div>
               </div>
             </FadeInUp>
           ))}
