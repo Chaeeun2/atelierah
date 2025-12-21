@@ -119,4 +119,12 @@
   .works-container {
     padding: 105px 25px 60px 25px;
   }
+
+  .works-footer {
+    padding: 20px;
+  }
+
+  .works-footer p {
+    font-size: 11px;
+  }
 }
