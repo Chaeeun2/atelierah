@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import Header from '../components/Header'
@@ -8,6 +9,11 @@ import './Works.css'
 function Works() {
   const navigate = useNavigate()
   const { language } = useLanguage()
+
+  // 페이지 타이틀 설정
+  useEffect(() => {
+    document.title = 'works - 아틀리에 아 atelier ah'
+  }, [])
 
   return (
     <div className="works">

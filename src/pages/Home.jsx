@@ -18,14 +18,19 @@ function Home() {
   const [isTransitioning, setIsTransitioning] = useState(true)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
+  // 페이지 타이틀 설정
+  useEffect(() => {
+    document.title = '아틀리에 아 atelier ah'
+  }, [])
+
   useEffect(() => {
     const fadeTimer = setTimeout(() => {
       setFadeOut(true)
-    }, 3000)
+    }, 2000)
 
     const removeTimer = setTimeout(() => {
       setShowSplash(false)
-    }, 3500) // 페이드아웃 애니메이션 시간(0.5s) 포함
+    }, 2500) // 페이드아웃 애니메이션 시간(0.5s) 포함
 
     return () => {
       clearTimeout(fadeTimer)

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
 import Header from '../components/Header'
 import FadeInUp from '../components/FadeInUp'
@@ -13,6 +13,11 @@ function Contact() {
     message: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // 페이지 타이틀 설정
+  useEffect(() => {
+    document.title = 'contact - 아틀리에 아 atelier ah'
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target

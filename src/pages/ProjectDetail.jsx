@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import Header from '../components/Header'
@@ -14,6 +14,13 @@ function ProjectDetail() {
   const [expandedDescriptions, setExpandedDescriptions] = useState({})
 
   const project = projects.find(p => p.id === parseInt(id))
+
+  // 페이지 타이틀 설정
+  useEffect(() => {
+    if (project) {
+      document.title = `${project.title.en} - 아틀리에 아 atelier ah`
+    }
+  }, [project])
 
   if (!project) {
     return (

@@ -15,6 +15,11 @@ function About() {
   const [isMobile, setIsMobile] = useState(false)
   const { language } = useLanguage()
 
+  // 페이지 타이틀 설정
+  useEffect(() => {
+    document.title = 'about - 아틀리에 아 atelier ah'
+  }, [])
+
   // 화면 크기 감지
   useEffect(() => {
     const checkMobile = () => {
