@@ -6,7 +6,7 @@
 
 body {
   margin: 0;
-  font-family: "Barlow", sans-serif, Pretendard;
+  font-family: "Archivo", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #ffffff;
@@ -15,5 +15,5 @@ body {
 }
 
 code {
-  font-family: "Barlow", sans-serif, Pretendard;
+  font-family: "Archivo", sans-serif;
 }

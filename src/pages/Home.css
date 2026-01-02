@@ -30,11 +30,17 @@
 .home-splash-text {
   font-family: "Noto Serif", serif;
   font-size: 32px;
-  color: rgba(0, 0, 0, 0.8);
-  font-weight: 300;
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 400;
   letter-spacing: -0.02em;
   margin: 0;
   padding: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.home-splash-text.text-fade-in {
+  opacity: 1;
 }
 
 .home-main-container {
@@ -86,7 +92,7 @@
 .home-image-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 150px 100px;
+  gap: 100px 60px;
   padding: 40px;
   max-width: 1460px;
   margin: 100px auto;

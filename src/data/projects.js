@@ -39,8 +39,8 @@ export const projects = [
         autoPlayInterval: 8000
       },
       {
-        type: 'description',
-        text: {
+        type: 'info',
+        description: {
           ko: `시끄러운 소음과 어두컴컴한 아스팔트 도로, 회색 건물들로 둘러싸인 거친 도시. 바쁜 일상 속에서 우리는 텅 비어 윤곽만 남습니다. 길을 잃은 채 도시를 헤매고 있습니다. 그 틈에서 따스함을 느끼게 하는 빛의 줄기를 발견했습니다. 무의식적으로 빛의 줄기를 따라갑니다.
 어둠 속에 가려져 있던 흐릿함은 점점 더 선명해지고 따스함으로 가득 차오릅니다. 내면의 이미지들이 겹쳐지고, 윤곽만 남은 우리의 내면은 더욱 풍요로워집니다.
 
@@ -76,10 +76,7 @@ From the second sequence, it is filled with a faint light. While calming the atm
 We used ink stick to create a deep black finish for the furniture. Then, through the varnish coating, I applied the color of light in the darkness. Only the light and myself exist in the dim light I hope it will be your own space where you can look at the light and find comfort for your tired self. 
 
 The cafe name was created by the client. I wanted a cafe that anyone could easily visit, even people who were just as disoriented as I was. 'GILCHI' means 'one who has lost direction' in Korean.`
-        }
-      },
-      {
-        type: 'info',
+        },
         details: {
           completion: {
             ko: "Dec, 2022",
@@ -233,8 +230,8 @@ The cafe name was created by the client. I wanted a cafe that anyone could easil
         autoPlayInterval: 8000
       },
       {
-        type: 'description',
-        text: {
+        type: 'info',
+        description: {
           ko: `고즈넉한 작은 집들이 즐비한 청주 운천동 골목. 골목마다 놀이터에 아이들이 모여들었습니다. 이야기도 나누고, 친구들과 뛰어놀고, 하고 싶은 일을 할 수 있는 곳이었습니다. 우리한테는 모든 것이 둥글게 보였습니다. 자유롭고 역동적인 공간이었지만, 그때를 생각하면 마음은 온전히 편안하게 느껴졌습니다.
 처음 건축주를 만나 공간에 들어갔을 때, 과거에는 식당인지 짐작할 수 없을 정도로 알 수 없는 칸막이가 설치되어 있었습니다.
 곰팡이와 먼지로 둘러싸인 흔적은 오랜 세월 그 자리에 있었던 것 같은 느낌을 주었습니다.
@@ -275,10 +272,7 @@ It will harmonize with the primary colored furniture and dynamic flooring. After
 
 To put it simply, a playground is a play of colors and a feast of shapes. Although it looks like a combination of complex shapes and colors, I simplified it with lines and understated tones throughout the study. 
 The branding logo evokes the afterimage of "nori" (the Korean word for play is pronounced as "nori" when pronounced verbally), which is pronounced like a baby cooing, and the "o" rolls down, and embodies the "norrri" logo.`
-        }
-      },
-      {
-        type: 'info',
+        },
         details: {
           completion: {
             ko: "Mar, 2023",
@@ -447,8 +441,8 @@ The branding logo evokes the afterimage of "nori" (the Korean word for play is p
         autoPlayInterval: 8000
       },
       {
-        type: 'description',
-        text: {
+        type: 'info',
+        description: {
           ko: `사람들은 술자리를 함께하며 "술잔을 나눈다"고 말한다.
 술잔은 술을 담는 그릇이지만, 그 모양과 크기, 재질은 술의 종류와 시대, 그리고 사람에 따라 모두 다르다.
 어울리는 음식에 따라 투박해지기도, 간결해지기도 한다.
@@ -530,10 +524,7 @@ so that when illuminated, it evokes the moment when a brush, soaked in watercolo
 In this space where countless colors blend into one canvas,
 the act of sharing a drink becomes a form of art,
 and the space itself becomes a gesture of connection.`
-        }
-      },
-      {
-        type: 'info',
+        },
         details: {
           completion: {
             ko: "Aug, 2023",
@@ -676,8 +667,8 @@ and the space itself becomes a gesture of connection.`
         autoPlayInterval: 8000
       },
       {
-        type: 'description',
-        text: {
+        type: 'info',
+        description: {
           ko: `지나기 전의 하루는 길다. 지나간 후의 하루는 짧다. 빠르게 흘러가는 고단한 일상 속에서 한국에는 빠질수 없는 음식으로 국밥이라고 있다. 국밥은 짧은 휴식과도 같다. 삶에 지친 이들에게 짧은 휴식의 깊이는 한 끼니 이상의 의미를 가진다. 한국의 패스트푸드로 불릴만큼, 짧은 시간안에 든든하게 채울수 있는 음식이다.
 
 클라이언트는 오랜 세월동안 쌓아온 독자적인 돼지머리 고기 레시피로 유명해진 20년 정통 한국 국밥집이다. 다른 지역에서 국밥 한 그릇을 먹기 위해서 직접 찾아올 정도의 깊이와 진미의 음식을 다루신다.
@@ -744,10 +735,7 @@ I was inspired and wanted to express that breathing feeling through lighting and
 
 South Korea's rapid change is both an advantage and a disadvantage. In a busy society,
 When you enter this space in the midst of a busy society, we hope you will find solace in the remnants of Korea's past, take a short break, and feel the feast of richness that is ripened together as one.`
-        }
-      },
-      {
-        type: 'info',
+        },
         details: {
           completion: {
             ko: "Mar, 2024",
@@ -899,8 +887,8 @@ When you enter this space in the midst of a busy society, we hope you will find 
         autoPlayInterval: 8000
       },
       {
-        type: 'description',
-        text: {
+        type: 'info',
+        description: {
           ko: `우리는 '백'을 아무것도 없는 것, 비어 있는 것, 무언가로 채울 수 있는 것, 그리고 깨끗한 것으로 바라본다.
 백의 풍경은 온갖 빛깔의 확장을 담는 배경이 되며, 모든 것을 포용하는 동시에, 흰빛의 공간을 마주했을 때 특유의 생경함을 불러일으킨다.
 백은 단순한 색에 머물지 않는다. 그것은 물질성을 환기하는 질감이며, 여백과도 같은 시간성과 공간성을 품고 있다.
@@ -978,10 +966,7 @@ White is not a color, but rather the absence of it.
 It is paradoxical—colorless yet luminous—and its simplicity draws us into quiet contemplation.
 I call this the purity of white: a freedom and naturalness that lead to a fundamental aesthetic.
 Within this space of white, we hope that the Sostel headquarters becomes a place where people's time gathers and new landscapes continuously unfold.`
-        }
-      },
-      {
-        type: 'info',
+        },
         details: {
           completion: {
             ko: "Mar, 2025",
@@ -1019,11 +1004,8 @@ Within this space of white, we hope that the Sostel headquarters becomes a place
       },
       {
         type: 'layout',
-        autoPlayInterval: 5000  // 여러 장일 경우 슬라이드 간격
+        autoPlayInterval: 5000
       },
-      // 이미지 행을 여러 개 추가 가능
-      // columns: 1, 2, 3 중 선택
-      // images: 해당 열 수만큼 이미지 배열
       {
         type: 'images',
         columns: 1,
@@ -1187,9 +1169,14 @@ Within this space of white, we hope that the Sostel headquarters becomes a place
         "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/06_atelier_16.jpg"
       ],
       sketch: [
-        "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_91.jpg"
+        "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_91.jpg",
+        "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_92.jpg",
+        "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_93.jpg"
       ],
-      layout: ["https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_layout1.jpg"]
+      layout: ["https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_layout1.jpg",
+        "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_layout2.jpg",
+        "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_layout3.jpg"
+      ]
     },
     title: {
       ko: "atelier ah",
@@ -1205,8 +1192,8 @@ Within this space of white, we hope that the Sostel headquarters becomes a place
         autoPlayInterval: 8000
       },
       {
-        type: 'description',
-        text: {
+        type: 'info',
+        description: {
           ko: `우리는 '백'을 아무것도 없는 것, 비어 있는 것, 무언가로 채울 수 있는 것, 그리고 깨끗한 것으로 바라본다.
 백의 풍경은 온갖 빛깔의 확장을 담는 배경이 되며, 모든 것을 포용하는 동시에, 흰빛의 공간을 마주했을 때 특유의 생경함을 불러일으킨다.
 백은 단순한 색에 머물지 않는다. 그것은 물질성을 환기하는 질감이며, 여백과도 같은 시간성과 공간성을 품고 있다.
@@ -1284,10 +1271,7 @@ White is not a color, but rather the absence of it.
 It is paradoxical—colorless yet luminous—and its simplicity draws us into quiet contemplation.
 I call this the purity of white: a freedom and naturalness that lead to a fundamental aesthetic.
 Within this space of white, we hope that the Sostel headquarters becomes a place where people's time gathers and new landscapes continuously unfold.`
-        }
-      },
-      {
-        type: 'info',
+        },
         details: {
           completion: {
             ko: "Mar, 2025",
@@ -1323,13 +1307,10 @@ Within this space of white, we hope that the Sostel headquarters becomes a place
           }
         }
       },
-            {
+      {
         type: 'layout',
-        autoPlayInterval: 5000  // 여러 장일 경우 슬라이드 간격
+        autoPlayInterval: 5000
       },
-      // 이미지 행을 여러 개 추가 가능
-      // columns: 1, 2, 3 중 선택
-      // images: 해당 열 수만큼 이미지 배열
       {
         type: 'images',
         columns: 1,
@@ -1402,26 +1383,6 @@ Within this space of white, we hope that the Sostel headquarters becomes a place
         ]
       },
     ]
-  },
-  {
-    id: 7,
-    images: {
-      thumbnail: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/01_gilchi_91.jpg",
-      slider: [
-        "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/01_gilchi_91.jpg"
-      ],
-      sketch: [],
-      layout: []
-    },
-    title: {
-      ko: "interior project",
-      en: "interior project"
-    },
-    category: {
-      ko: "ongoing",
-      en: "ongoing"
-    },
-    content: []
   },
 ]
 

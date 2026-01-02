@@ -33,7 +33,13 @@ function PressDetail() {
   }
 
   const currentProject = language === 'ko' ? pressItem.project.ko : pressItem.project.en
-  const content = pressItem.content || []
+  const originalContent = pressItem.content || []
+  
+  // description과 info 순서 변경: info를 description 앞으로
+  const content = [...originalContent].sort((a, b) => {
+    const order = { hero: 0, info: 1, description: 2, images: 3 }
+    return (order[a.type] ?? 99) - (order[b.type] ?? 99)
+  })
 
   // 섹션 렌더링 함수
   const renderContentSection = (section, index) => {
@@ -69,11 +75,11 @@ function PressDetail() {
             textElement.style.webkitLineClamp = 'unset'
             
             setTimeout(() => {
-              textElement.style.maxHeight = '3.6em'
+              textElement.style.maxHeight = '7.2em'
               
               setTimeout(() => {
                 textElement.style.display = '-webkit-box'
-                textElement.style.webkitLineClamp = '2'
+                textElement.style.webkitLineClamp = '4'
               }, 500)
             }, 10)
           } else {
@@ -106,6 +112,7 @@ function PressDetail() {
               </button>
               <div 
                 className={`press-detail-description-text press-detail-description-text-${language} ${isExpanded ? 'expanded' : ''}`}
+                onClick={handleToggle}
               >
                 {descriptionText}
               </div>

@@ -13,8 +13,8 @@
 
 /* 메인 이미지 슬라이더 */
 .press-detail-main-slider-component {
-  height: calc(100dvh - 240px);
-  padding: 0 0 50px 0;
+  height: calc(100dvh - 100px);
+  padding: 0 0 120px 0;
 }
 
 .press-detail-main-slider-component .image-slider-container {
@@ -75,13 +75,14 @@
   white-space: pre-line;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
-  max-height: 3.6em;
+  max-height: 7.2em; /* 4줄 높이 */
   transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   flex: 1;
   word-break: keep-all;
   text-overflow: ellipsis;
+  cursor: pointer;
 }
 
 .press-detail-description-text.expanded {
@@ -93,7 +94,7 @@
 }
 
 .press-detail-description-text-en {
-  font-family: "Barlow", sans-serif;
+  font-family: "Archivo", sans-serif;
   line-height: 1.5;
 }
 
@@ -117,7 +118,7 @@
   color: rgba(0, 0, 0, 0.6);
   margin: 0 0 24px 0;
   line-height: 1.4;
-  font-family: "Barlow", sans-serif, Pretendard;
+  font-family: "Archivo", sans-serif;
 }
 
 .press-detail-info-group {
@@ -140,14 +141,14 @@
   color: rgba(0, 0, 0, 0.6);
   text-transform: lowercase;
   white-space: nowrap;
-  font-family: "Barlow", sans-serif;
+  font-family: "Archivo", sans-serif;
 }
 
 .press-detail-info-value {
   font-size: 14px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.6);
-  font-family: "Barlow", sans-serif, Pretendard;
+  font-family: "Archivo", sans-serif;
 }
 
 /* 이미지 그리드 */
@@ -202,10 +203,30 @@
 @media (max-width: 600px) {
   .press-detail-main-slider-component {
     height: 50dvh;
+    padding: 0 0 50px 0;
   }
 
   .press-detail-container {
     padding: 100px 25px 60px 25px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 모바일에서 순서 변경: hero -> description -> info -> images */
+  .press-detail-main-slider {
+    order: 1;
+  }
+
+  .press-detail-description {
+    order: 2;
+  }
+
+  .press-detail-info {
+    order: 3;
+  }
+
+  .press-detail-images {
+    order: 4;
   }
 
   .press-detail-description {
@@ -217,12 +238,14 @@
   }
 
   .press-detail-description {
-    margin-bottom: 120px;
+    margin-bottom: 60px;
   }
 
   .press-detail-description-text {
     font-size: 13px;
     line-height: 1.7;
+    -webkit-line-clamp: 4;
+    max-height: 7.2em; /* 4줄 높이 */
   }
 
   .press-detail-description-text-en {

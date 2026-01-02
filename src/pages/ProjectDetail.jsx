@@ -45,7 +45,12 @@ function ProjectDetail() {
           src: img,
           alt: `${currentTitle} - Image ${imgIndex + 1}`
         }))
-        const mobileSketchImage = project.images.sketch?.[0]
+        // 모바일용 스케치 슬라이더 이미지
+        const mobileSketchImages = (project.images.sketch || []).map((img, imgIndex) => ({
+          id: imgIndex + 1,
+          src: img,
+          alt: `${currentTitle} - Sketch ${imgIndex + 1}`
+        }))
         return (
           <>
             <FadeInUp key={`slider-${index}`} className="project-detail-main-slider">
@@ -55,77 +60,16 @@ function ProjectDetail() {
                 className="project-detail-main-slider-component"
               />
             </FadeInUp>
-            {mobileSketchImage && (
+            {mobileSketchImages.length > 0 && (
               <FadeInUp key={`mobile-sketch-${index}`} className="project-detail-mobile-sketch">
-                <img 
-                  src={mobileSketchImage}
-                  alt={`${currentTitle} - Sketch`}
-                  className="project-detail-mobile-sketch-image"
+                <ImageSlider 
+                  images={mobileSketchImages}
+                  autoPlayInterval={5000}
+                  className="project-detail-mobile-sketch-slider"
                 />
               </FadeInUp>
             )}
           </>
-        )
-
-      case 'description':
-        const descriptionDelay = 200
-        const descriptionKey = `description-${index}`
-        const isExpanded = expandedDescriptions[descriptionKey] || false
-        const descriptionText = language === 'ko' ? section.text.ko : section.text.en
-        
-        const handleToggle = (e) => {
-          const textElement = e.currentTarget.parentElement.querySelector('.project-detail-description-text')
-          const wasExpanded = expandedDescriptions[descriptionKey] || false
-          
-          if (wasExpanded) {
-            // 접을 때: 먼저 max-height를 줄이고, transition이 끝난 후에 -webkit-line-clamp 적용
-            textElement.style.display = 'block'
-            textElement.style.webkitLineClamp = 'unset'
-            
-            setTimeout(() => {
-              textElement.style.maxHeight = '3.6em'
-              
-              setTimeout(() => {
-                textElement.style.display = '-webkit-box'
-                textElement.style.webkitLineClamp = '2'
-              }, 500) // transition 시간과 동일
-            }, 10)
-          } else {
-            // 펼칠 때: 먼저 -webkit-line-clamp를 제거하고, 그 다음 max-height 증가
-            textElement.style.display = 'block'
-            textElement.style.webkitLineClamp = 'unset'
-            setTimeout(() => {
-              textElement.style.maxHeight = '2000px'
-            }, 10)
-          }
-          
-          setExpandedDescriptions(prev => ({
-            ...prev,
-            [descriptionKey]: !prev[descriptionKey]
-          }))
-        }
-        
-        return (
-            <FadeInUp key={`description-${index}`} className="project-detail-description" delay={descriptionDelay}>
-                <div className="project-detail-description-spacer"></div>
-            <div className="project-detail-description-wrapper">
-              <button 
-                className={`project-detail-description-toggle ${isExpanded ? 'expanded' : ''}`}
-                onClick={handleToggle}
-              >
-                <img 
-                  src="https://pub-4b716c374bc747948e9ac588042939de.r2.dev/toggle.png" 
-                  alt="toggle"
-                  className="project-detail-description-toggle-icon"
-                />
-              </button>
-              <div 
-                className={`project-detail-description-text project-detail-description-text-${language} ${isExpanded ? 'expanded' : ''}`}
-              >
-                {descriptionText}
-              </div>
-            </div>
-          </FadeInUp>
         )
 
       case 'info':
@@ -145,83 +89,148 @@ function ProjectDetail() {
         const firstImage = sketchImages[0]
         const restImages = sketchImages.slice(1)
         
+        // description 통합
+        const descriptionKey = `info-description-${index}`
+        const isExpanded = expandedDescriptions[descriptionKey] || false
+        const descriptionText = section.description 
+          ? (language === 'ko' ? section.description.ko : section.description.en)
+          : null
+        
+        const handleToggle = (e) => {
+          const textElement = e.currentTarget.parentElement.querySelector('.project-detail-description-text')
+          const wasExpanded = expandedDescriptions[descriptionKey] || false
+          
+          if (wasExpanded) {
+            textElement.style.display = 'block'
+            textElement.style.webkitLineClamp = 'unset'
+            
+            setTimeout(() => {
+              textElement.style.maxHeight = '12.6em'
+              
+              setTimeout(() => {
+                textElement.style.display = '-webkit-box'
+                textElement.style.webkitLineClamp = '7'
+              }, 500)
+            }, 10)
+          } else {
+            textElement.style.display = 'block'
+            textElement.style.webkitLineClamp = 'unset'
+            setTimeout(() => {
+              textElement.style.maxHeight = '2000px'
+            }, 10)
+          }
+          
+          setExpandedDescriptions(prev => ({
+            ...prev,
+            [descriptionKey]: !prev[descriptionKey]
+          }))
+        }
+        
+        // 스케치 이미지 슬라이더용 데이터
+        const sketchSliderImages = sketchImages.map((img, imgIndex) => ({
+          id: imgIndex + 1,
+          src: img,
+          alt: `${currentTitle} - Sketch ${imgIndex + 1}`
+        }))
+        
         return (
-          <FadeInUp key={`info-${index}`} className="project-detail-info">
-            <div className="project-detail-info-grid">
-              <div 
-                className="project-detail-info-sketch-column"
-                onMouseEnter={(e) => {
-                  const expandEl = e.currentTarget.querySelector('.project-detail-info-sketch-expand')
-                  const infoEl = e.currentTarget.closest('.project-detail-info')
-                  if (expandEl && infoEl) {
-                    infoEl.style.marginBottom = `${60 + expandEl.scrollHeight}px`
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  const infoEl = e.currentTarget.closest('.project-detail-info')
-                  if (infoEl) {
-                    infoEl.style.marginBottom = '60px'
-                  }
-                }}
-              >
-                <img 
-                  src={firstImage}
-                  alt={`${currentTitle} - Sketch 1`}
-                  className="project-detail-info-sketch-first"
-                />
-                {restImages.length > 0 && (
-                  <div className="project-detail-info-sketch-expand">
-                    {restImages.map((image, imgIndex) => (
-                      <img 
-                        key={imgIndex}
-                        src={image}
-                        alt={`${currentTitle} - Sketch ${imgIndex + 2}`}
-                        className="project-detail-info-sketch-rest"
-                      />
-                    ))}
+          <>
+            {/* 모바일용 description - 별도 요소로 분리 */}
+            {descriptionText && (
+              <FadeInUp key={`description-mobile-${index}`} className="project-detail-description-mobile">
+                <div className="project-detail-description-spacer"></div>
+                <div className="project-detail-description-wrapper">
+                  <button 
+                    className={`project-detail-description-toggle ${isExpanded ? 'expanded' : ''}`}
+                    onClick={handleToggle}
+                  >
+                    <img 
+                      src="https://pub-4b716c374bc747948e9ac588042939de.r2.dev/toggle.png" 
+                      alt="toggle"
+                      className="project-detail-description-toggle-icon"
+                    />
+                  </button>
+                  <div 
+                    className={`project-detail-description-text project-detail-description-text-${language} ${isExpanded ? 'expanded' : ''}`}
+                    onClick={handleToggle}
+                  >
+                    {descriptionText}
                   </div>
-                )}
-              </div>
-              <div className={`project-detail-info-text project-detail-info-text-${language}`}>
-                <h2 className="project-detail-info-title">{currentTitle}</h2>
-                <p className="project-detail-info-category">{currentCategory} project</p>
-                
-                <div className="project-detail-info-group">
-                  {['completion', 'usage', 'projectArea', 'location'].map((key) => {
-                    if (!section.details[key]) return null
-                    const value = section.details[key]
-                    return (
-                      <div key={key} className="project-detail-info-item">
-                        <span className="project-detail-info-label">
-                          {labelMap[key]} :
-                        </span>
-                        <span className="project-detail-info-value">
-                          {language === 'ko' ? value.ko : value.en}
-                        </span>
-                      </div>
-                    )
-                  })}
                 </div>
-                
-                <div className="project-detail-info-group">
-                  {['client', 'design', 'photo'].map((key) => {
-                    if (!section.details[key]) return null
-                    const value = section.details[key]
-                    return (
-                      <div key={key} className="project-detail-info-item">
-                        <span className="project-detail-info-label">
-                          {labelMap[key]} :
-                        </span>
-                        <span className="project-detail-info-value">
-                          {language === 'ko' ? value.ko : value.en}
-                        </span>
+              </FadeInUp>
+            )}
+            
+            {/* info 섹션 (데스크탑: 스케치+info+description / 모바일: info만) */}
+            <FadeInUp key={`info-${index}`} className="project-detail-info">
+              <div className="project-detail-info-grid">
+                <div className="project-detail-info-sketch-column">
+                  <ImageSlider 
+                    images={sketchSliderImages}
+                    autoPlayInterval={5000}
+                    className="project-detail-sketch-slider"
+                  />
+                </div>
+                <div className="project-detail-info-container">
+                  <div className={`project-detail-info-text project-detail-info-text-${language}`}>
+                    <h2 className="project-detail-info-title">{currentTitle}</h2>
+                    <p className="project-detail-info-category">{currentCategory} project</p>
+                    <div className="project-detail-info-group">
+                      {['completion', 'usage', 'projectArea', 'location'].map((key) => {
+                        if (!section.details[key]) return null
+                        const value = section.details[key]
+                        return (
+                          <div key={key} className="project-detail-info-item">
+                            <span className="project-detail-info-label">
+                              {labelMap[key]} :
+                            </span>
+                            <span className="project-detail-info-value">
+                              {language === 'ko' ? value.ko : value.en}
+                            </span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                    <div className="project-detail-info-group">
+                      {['client', 'design', 'photo'].map((key) => {
+                        if (!section.details[key]) return null
+                        const value = section.details[key]
+                        return (
+                          <div key={key} className="project-detail-info-item">
+                            <span className="project-detail-info-label">
+                              {labelMap[key]} :
+                            </span>
+                            <span className="project-detail-info-value">
+                              {language === 'ko' ? value.ko : value.en}
+                            </span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  {/* 데스크탑용 description - info 안에 포함 */}
+                  {descriptionText && (
+                    <div className="project-detail-info-description">
+                      <button 
+                        className={`project-detail-description-toggle ${isExpanded ? 'expanded' : ''}`}
+                        onClick={handleToggle}
+                      >
+                        <img 
+                          src="https://pub-4b716c374bc747948e9ac588042939de.r2.dev/toggle.png" 
+                          alt="toggle"
+                          className="project-detail-description-toggle-icon"
+                        />
+                      </button>
+                      <div 
+                        className={`project-detail-description-text project-detail-description-text-${language} ${isExpanded ? 'expanded' : ''}`}
+                      >
+                        {descriptionText}
                       </div>
-                    )
-                  })}
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-          </FadeInUp>
+            </FadeInUp>
+          </>
         )
 
       case 'layout':

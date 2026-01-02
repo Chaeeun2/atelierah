@@ -8,6 +8,7 @@ import './Home.css'
 function Home() {
   const navigate = useNavigate()
   const [showSplash, setShowSplash] = useState(true)
+  const [textFadeIn, setTextFadeIn] = useState(false)
   const [fadeOut, setFadeOut] = useState(false)
   
   // 모바일 슬라이더 상태 (ImageSlider와 동일한 로직)
@@ -24,15 +25,22 @@ function Home() {
   }, [])
 
   useEffect(() => {
+    // 0.5초 후 텍스트 페이드인
+    const textFadeInTimer = setTimeout(() => {
+      setTextFadeIn(true)
+    }, 500)
+
+    // 3초 후 텍스트와 배경 함께 페이드아웃
     const fadeTimer = setTimeout(() => {
       setFadeOut(true)
-    }, 2000)
+    }, 3000)
 
     const removeTimer = setTimeout(() => {
       setShowSplash(false)
-    }, 2500) // 페이드아웃 애니메이션 시간(0.5s) 포함
+    }, 3600) // 페이드아웃 애니메이션 시간(0.6s) 포함
 
     return () => {
+      clearTimeout(textFadeInTimer)
       clearTimeout(fadeTimer)
       clearTimeout(removeTimer)
     }
@@ -249,7 +257,7 @@ function Home() {
     <div className="home">
       {showSplash && (
         <div className={`home-splash ${fadeOut ? 'fade-out' : ''}`}>
-          <h1 className="home-splash-text">atelier ah</h1>
+          <h1 className={`home-splash-text ${textFadeIn ? 'text-fade-in' : ''}`}>atelier ah</h1>
         </div>
       )}
       <Header />
@@ -282,6 +290,7 @@ function Home() {
       <FadeInUp>
         <ImageSlider 
           images={sliderImages}
+          videoUrl="https://youtu.be/_9SYv7nZx98?si=BVCSxjIARIH29euy"
           autoPlayInterval={8000}
           className="home-slider"
         />

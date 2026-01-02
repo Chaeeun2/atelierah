@@ -1,12 +1,48 @@
 import { useState, useEffect } from 'react'
 import './ImageSlider.css'
 
-function ImageSlider({ images = [], autoPlayInterval = 8000, className = '' }) {
-  const slideCount = images.length
+// 유튜브 URL을 embed URL로 변환 (자동재생, 음소거, 반복)
+function getYouTubeEmbedUrl(url) {
+  if (!url) return null
+  
+  let videoId = null
+  
+  // youtube.com/watch?v=VIDEO_ID 형식
+  const watchMatch = url.match(/youtube\.com\/watch\?v=([^&]+)/)
+  if (watchMatch) {
+    videoId = watchMatch[1]
+  }
+  
+  // youtu.be/VIDEO_ID 형식
+  const shortMatch = url.match(/youtu\.be\/([^?]+)/)
+  if (shortMatch) {
+    videoId = shortMatch[1]
+  }
+  
+  // 이미 embed URL인 경우
+  const embedMatch = url.match(/youtube\.com\/embed\/([^?]+)/)
+  if (embedMatch) {
+    videoId = embedMatch[1]
+  }
+  
+  if (!videoId) return null
+  
+  // 자동재생, 음소거, 반복, 컨트롤 숨김 파라미터 추가
+  return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&playsinline=1&controls=0`
+}
+
+function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, className = '' }) {
+  // 영상이 있으면 영상만 표시 (이미지 무시)
+  const embedUrl = getYouTubeEmbedUrl(videoUrl)
+  const slides = embedUrl 
+    ? [{ id: 'video', type: 'video', embedUrl }]
+    : images
+
+  const slideCount = slides.length
   const isSingleImage = slideCount <= 1
   
   // 무한 루프를 위해 슬라이드 배열 복제 (1장일 때는 복제하지 않음)
-  const infiniteSlides = isSingleImage ? images : [...images, ...images, ...images]
+  const infiniteSlides = isSingleImage ? slides : [...slides, ...slides, ...slides]
 
   const [currentSlide, setCurrentSlide] = useState(isSingleImage ? 0 : slideCount) // 중간 위치에서 시작 (1장일 때는 0)
   const [isDragging, setIsDragging] = useState(false)
@@ -191,13 +227,22 @@ function ImageSlider({ images = [], autoPlayInterval = 8000, className = '' }) {
             transition: isDragging || !isTransitioning ? 'none' : 'transform 1s ease-in-out'
           }}
         >
-          {infiniteSlides.map((image, index) => (
-            <div key={`${image.id}-${index}`} className="image-slider-item">
-              {image.src ? (
-                <img src={image.src} alt={image.alt} />
+          {infiniteSlides.map((slide, index) => (
+            <div key={`${slide.id}-${index}`} className="image-slider-item">
+              {slide.type === 'video' ? (
+                <iframe
+                  src={slide.embedUrl}
+                  title="YouTube video"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="image-slider-video"
+                />
+              ) : slide.src ? (
+                <img src={slide.src} alt={slide.alt} />
               ) : (
                 <div className="image-slider-placeholder">
-                  <span>{image.alt}</span>
+                  <span>{slide.alt}</span>
                 </div>
               )}
             </div>
