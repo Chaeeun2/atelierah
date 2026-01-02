@@ -222,6 +222,7 @@ function ProjectDetail() {
                       </button>
                       <div 
                         className={`project-detail-description-text project-detail-description-text-${language} ${isExpanded ? 'expanded' : ''}`}
+                        onClick={handleToggle}
                       >
                         {descriptionText}
                       </div>
