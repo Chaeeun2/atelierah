@@ -94,7 +94,8 @@
 }
 
 .press-detail-description-text-en {
-  font-family: "Archivo", sans-serif;
+  font-family: "Roboto Slab", Pretendard, serif;
+  font-weight: 300;
   line-height: 1.5;
 }
 
@@ -118,7 +119,8 @@
   color: rgba(0, 0, 0, 0.6);
   margin: 0 0 24px 0;
   line-height: 1.4;
-  font-family: "Archivo", sans-serif;
+  font-family: "Roboto Slab", Pretendard, serif;
+  font-weight: 300;
 }
 
 .press-detail-info-group {
@@ -141,14 +143,16 @@
   color: rgba(0, 0, 0, 0.6);
   text-transform: lowercase;
   white-space: nowrap;
-  font-family: "Archivo", sans-serif;
+  font-family: "Roboto Slab", Pretendard, serif;
+  font-weight: 300;
 }
 
 .press-detail-info-value {
   font-size: 14px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.6);
-  font-family: "Archivo", sans-serif;
+  font-family: "Roboto Slab", Pretendard, serif;
+  font-weight: 300;
 }
 
 /* 이미지 그리드 */

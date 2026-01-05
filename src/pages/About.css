@@ -76,7 +76,7 @@
 
 /* 국문 스타일 */
 .about-description-ko {
-  font-family: Pretendard, sans-serif;
+  font-family: "Roboto Slab", Pretendard, serif;
   font-size: 14px;
   color: rgba(0, 0, 0, 0.6);
   line-height: 1.7;
@@ -84,7 +84,8 @@
 
 /* 영문 스타일 */
 .about-description-en {
-  font-family: "Archivo", sans-serif;
+  font-family: "Roboto Slab", Pretendard, serif;
+  font-weight: 300;
   font-size: 14px;
   color: rgba(0, 0, 0, 0.6);
   line-height: 1.4;

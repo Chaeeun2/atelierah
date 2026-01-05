@@ -118,7 +118,8 @@
 }
 
 .project-detail-description-text-en {
-  font-family: "Archivo", sans-serif;
+  font-family: "Roboto Slab", Pretendard, serif;
+  font-weight: 300;
   line-height: 1.5;
 }
 
@@ -183,7 +184,8 @@
 
 .project-detail-info-title {
   font-size: 14px;
-  font-weight: 400;
+  font-family: "Roboto Slab", Pretendard, serif;
+  font-weight: 300;
   color: rgba(0, 0, 0, 0.6);
   margin: 0 0 8px 0;
   line-height: 1.4;
@@ -198,7 +200,6 @@
 
 .project-detail-info-category {
   font-size: 14px;
-  font-weight: 400;
   color: rgba(0, 0, 0, 0.6);
   line-height: 1.4;
   text-transform: lowercase;
@@ -225,7 +226,6 @@
 
 .project-detail-info-label {
   font-size: 14px;
-  font-weight: 400;
   color: rgba(0, 0, 0, 0.6);
   text-transform: lowercase;
   white-space: nowrap;
@@ -233,16 +233,17 @@
 
 .project-detail-info-value {
   font-size: 14px;
-  font-weight: 400;
   color: rgba(0, 0, 0, 0.6);
 }
 
 .project-detail-info-text-ko {
-  font-family: "Archivo", sans-serif;
+  font-family: "Roboto Slab", Pretendard, serif;
+  font-weight: 300;
 }
 
 .project-detail-info-text-en {
-  font-family: "Archivo", sans-serif;
+  font-family: "Roboto Slab", Pretendard, serif;
+  font-weight: 300;
 }
 
 /* 레이아웃 섹션 - 왼쪽 빈칸, 오른쪽 레이아웃 이미지 */
@@ -300,7 +301,8 @@
   color: rgba(0, 0, 0, 0.6);
   cursor: pointer;
   padding: 0;
-  font-family: "Archivo", sans-serif;
+  font-family: "Roboto Slab", Pretendard, serif;
+  font-weight: 300;
   transition: color 0.3s ease;
 }
 
