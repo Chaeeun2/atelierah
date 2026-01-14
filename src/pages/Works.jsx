@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import FadeInUp from '../components/FadeInUp'
 import { projects } from '../data/projects'
 import './Works.css'
@@ -47,7 +48,7 @@ function Works() {
                     {language === 'ko' ? project.title.ko : project.title.en}
                   </span>
                   <span className="works-category">
-                    {language === 'ko' ? project.category.ko : project.category.en}
+                    {language === 'ko' ? project.category.ko : project.category.en}, {project.year} 
                   </span>
                 </div>
               </FadeInUp>
@@ -56,9 +57,7 @@ function Works() {
         </FadeInUp>
       </div>
 
-      <footer className="works-footer">
-        <p>©2025 by atelier ah</p>
-      </footer>
+      <Footer />
     </div>
   )
 }

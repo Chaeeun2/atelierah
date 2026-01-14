@@ -32,6 +32,7 @@ export const projects = [
       ko: "interior",
       en: "interior"
     },
+    year: "2022",
     // 상세 페이지 내용 배열
     content: [
       {
@@ -224,6 +225,7 @@ The cafe name was created by the client. I wanted a cafe that anyone could easil
       ko: "interior",
       en: "interior"
     },
+    year: "2023",
     content: [
       {
         type: 'slider',
@@ -435,6 +437,7 @@ The branding logo evokes the afterimage of "nori" (the Korean word for play is p
       ko: "interior",
       en: "interior"
     },
+    year: "2023",
     content: [
       {
         type: 'slider',
@@ -661,6 +664,7 @@ and the space itself becomes a gesture of connection.`
       ko: "interior",
       en: "interior"
     },
+    year: "2024",
     content: [
       {
         type: 'slider',
@@ -881,6 +885,7 @@ When you enter this space in the midst of a busy society, we hope you will find 
       ko: "architecture",
       en: "architecture"
     },
+    year: "2025",
     content: [
       {
         type: 'slider',
@@ -1186,6 +1191,7 @@ Within this space of white, we hope that the Sostel headquarters becomes a place
       ko: "furniture",
       en: "furniture"
     },
+    year: "2025",
     content: [
       {
         type: 'slider',

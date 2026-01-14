@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import FadeInUp from '../components/FadeInUp'
 import ImageSlider from '../components/ImageSlider'
 import { projects } from '../data/projects'
@@ -302,9 +303,7 @@ function ProjectDetail() {
         {content.map((section, index) => renderContentSection(section, index))}
       </div>
 
-      <footer className="project-detail-footer">
-        <p>©2025 by atelier ah</p>
-      </footer>
+      <Footer />
     </div>
   )
 }

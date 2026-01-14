@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import FadeInUp from '../components/FadeInUp'
 import ImageSlider from '../components/ImageSlider'
 import { pressItems } from '../data/press'
@@ -186,9 +187,7 @@ function PressDetail() {
         {content.map((section, index) => renderContentSection(section, index))}
       </div>
 
-      <footer className="press-detail-footer">
-        <p>©2025 by atelier ah</p>
-      </footer>
+      <Footer />
     </div>
   )
 }

@@ -28,15 +28,17 @@
 }
 
 .home-splash-text {
-  font-family: "Noto Serif", serif;
-  font-size: 32px;
+  font-family: "Roboto Slab", "Hahmlet", serif;
+  font-size: 19px;
   color: rgba(0, 0, 0, 0.7);
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: -0.02em;
-  margin: 0;
   padding: 0;
   opacity: 0;
   transition: opacity 0.8s ease;
+  text-align: center;
+  width: 100%;
+  margin: 0 20px;
 }
 
 .home-splash-text.text-fade-in {
@@ -44,24 +46,23 @@
 }
 
 .home-main-container {
-  height: 95dvh;
+  height: 90dvh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 13vh;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 10vh;
 }
 
 /* Horizontal Line */
 .home-horizontal-line {
   width: 100%;
-  max-width: 1460px;
-  margin: 30px auto;
+  max-width: 1550px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px 40px;
-  margin-top: 14dvh;
+  padding: 0 40px;
 }
 
 .home-horizontal-line-img {
@@ -73,29 +74,47 @@
 /* Description */
 .home-description {
   text-align: center;
-  padding: 40px 20px;
+  padding: 00px 40px;
   margin: 0 auto;
   max-width: 1460px;
   margin-bottom: 1dvh;
 }
 
 .home-description p {
-  font-size: 16px;
-  font-family: "Noto Serif", serif;
-  color: rgba(0, 0, 0, 0.5);
+  font-size: 12px;
+  font-family: "Roboto Slab", "Hahmlet", serif;
+  color: rgba(0, 0, 0, 0.7);
   letter-spacing: -0.01em;
-  line-height: 1.6;
-  font-weight: 500;
+  line-height: 1.4;
+  font-weight: 300;
+  width: 100%;
+  max-width: 870px;
+}
+
+/* PC용 텍스트: 기본 표시, 모바일에서 숨김 */
+.home-description-pc {
+  display: block;
+}
+
+/* 모바일용 텍스트: 기본 숨김, 모바일에서 표시 */
+.home-description-mobile {
+  display: none;
 }
 
 /* Image Grid */
 .home-image-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 100px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
   padding: 40px;
   max-width: 1460px;
   margin: 100px auto;
+}
+
+.home-image-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0px;
 }
 
 .home-image-item {
@@ -122,14 +141,33 @@
   display: block;
 }
 
-/* Sketch 타입: contain */
+/* Sketch 타입: contain, 기본 opacity 0 */
+.home-image-item-sketch {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
 .home-image-item-sketch img {
   object-fit: contain;
 }
 
+/* Photo에 hover 시 같은 row의 Sketch opacity 1 */
+.home-image-row:has(.home-image-item-photo:hover) .home-image-item-sketch {
+  opacity: 1;
+}
+
 /* Photo 타입: cover (overflow hidden은 이미 .home-image-item에 적용됨) */
+.home-image-item-photo {
+  transition: opacity 0.4s ease;
+}
+
 .home-image-item-photo img {
   object-fit: cover;
+}
+
+/* Photo에 hover 시 Photo opacity 0 */
+.home-image-item-photo:hover {
+  opacity: 0;
 }
 
 /* Footer */
@@ -142,7 +180,7 @@
 
 .home-footer p {
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
   margin: 0;
 }
 
@@ -154,7 +192,7 @@
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .home-splash-text {
-    font-size: 28px;
+    font-size: 16px;
   }
 
   .home-image-grid {
@@ -167,31 +205,41 @@
 }
 
 @media (max-width: 600px) {
+  .home-main-container {
+    height: 95dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 37dvh;
+    align-items: center;
+    margin-bottom: 5vh;
+  }
+
   .home-splash-text {
-    font-size: 24px;
+    font-size: 14px;
   }
 
   .home-horizontal-line {
     width: 100%;
     padding: 0;
     overflow: hidden;
-    margin-top: 22dvh;
   }
 
   .home-horizontal-line img {
     width: 250%;
   }
 
-  .home-main-container {
-    height: 100dvh;
-  }
-
   .home-description p {
     font-size: 11px;
   }
 
-  .home-description {
-    margin-bottom: 7dvh;
+  /* 모바일에서 PC 텍스트 숨기고 모바일 텍스트 표시 */
+  .home-description-pc {
+    display: none;
+  }
+
+  .home-description-mobile {
+    display: block;
   }
 
   .home-slider {

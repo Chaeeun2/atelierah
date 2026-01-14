@@ -71,7 +71,7 @@
 .press-detail-description-text {
   font-size: 14px;
   line-height: 1.8;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
   white-space: pre-line;
   overflow: hidden;
   display: -webkit-box;
@@ -90,12 +90,13 @@
 }
 
 .press-detail-description-text-ko {
-  font-family: Pretendard, sans-serif;
+  font-family: "Roboto Slab", "Hahmlet", serif;
+  letter-spacing: -0.02em;
 }
 
 .press-detail-description-text-en {
-  font-family: "Noto Serif", Pretendard, serif;
-  font-weight: 400;
+  font-family: "Roboto Slab", "Hahmlet", serif;
+  font-weight: 300;
   line-height: 1.5;
 }
 
@@ -115,12 +116,11 @@
 
 .press-detail-info-title {
   font-size: 14px;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.6);
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.7);
   margin: 0 0 24px 0;
   line-height: 1.4;
-  font-family: "Noto Serif", Pretendard, serif;
-  font-weight: 400;
+  font-family: "Roboto Slab", "Hahmlet", serif;
 }
 
 .press-detail-info-group {
@@ -139,20 +139,18 @@
 
 .press-detail-info-label {
   font-size: 14px;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.6);
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.7);
   text-transform: lowercase;
   white-space: nowrap;
-  font-family: "Noto Serif", Pretendard, serif;
-  font-weight: 400;
+  font-family: "Roboto Slab", "Hahmlet", serif;
 }
 
 .press-detail-info-value {
   font-size: 14px;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.6);
-  font-family: "Noto Serif", Pretendard, serif;
-  font-weight: 400;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.7);
+  font-family: "Roboto Slab", "Hahmlet", serif;
 }
 
 /* 이미지 그리드 */
@@ -199,7 +197,7 @@
 
 .press-detail-footer p {
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
   margin: 0;
 }
 

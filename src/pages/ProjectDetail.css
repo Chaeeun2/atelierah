@@ -95,7 +95,7 @@
 .project-detail-description-text {
   font-size: 14px;
   line-height: 1.8;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
   white-space: pre-line;
   overflow: hidden;
   display: -webkit-box;
@@ -107,6 +107,7 @@
   word-break: keep-all;
   text-overflow: ellipsis;
   cursor: pointer;
+  letter-spacing: -0.02em;
 }
 
 .project-detail-description-text.expanded {
@@ -114,12 +115,13 @@
 }
 
 .project-detail-description-text-ko {
-  font-family: Pretendard, sans-serif;
+  font-family: "Roboto Slab", "Hahmlet", serif;
+  font-weight: 300;
 }
 
 .project-detail-description-text-en {
-  font-family: "Noto Serif", Pretendard, serif;
-  font-weight: 400;
+  font-family: "Roboto Slab", "Hahmlet", serif;
+  font-weight: 300;
   line-height: 1.5;
 }
 
@@ -184,9 +186,9 @@
 
 .project-detail-info-title {
   font-size: 14px;
-  font-family: "Noto Serif", Pretendard, serif;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.6);
+  font-family: "Roboto Slab", "Hahmlet", serif;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.7);
   margin: 0 0 8px 0;
   line-height: 1.4;
   margin: 0 0 24px 0;
@@ -200,7 +202,7 @@
 
 .project-detail-info-category {
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
   line-height: 1.4;
   text-transform: lowercase;
 }
@@ -226,24 +228,24 @@
 
 .project-detail-info-label {
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
   text-transform: lowercase;
   white-space: nowrap;
 }
 
 .project-detail-info-value {
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .project-detail-info-text-ko {
-  font-family: "Noto Serif", Pretendard, serif;
-  font-weight: 400;
+  font-family: "Roboto Slab", "Hahmlet", serif;
+  font-weight: 300;
 }
 
 .project-detail-info-text-en {
-  font-family: "Noto Serif", Pretendard, serif;
-  font-weight: 400;
+  font-family: "Roboto Slab", "Hahmlet", serif;
+  font-weight: 300;
 }
 
 /* 레이아웃 섹션 - 왼쪽 빈칸, 오른쪽 레이아웃 이미지 */
@@ -298,11 +300,11 @@
   background: none;
   border: none;
   font-size: 16px;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
   cursor: pointer;
   padding: 0;
-  font-family: "Noto Serif", Pretendard, serif;
-  font-weight: 400;
+  font-family: "Roboto Slab", "Hahmlet", serif;
+  font-weight: 300;
   transition: color 0.3s ease;
 }
 
@@ -319,7 +321,7 @@
 
 .project-detail-footer p {
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
   margin: 0;
 }
 

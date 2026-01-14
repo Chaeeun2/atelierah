@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import FadeInUp from '../components/FadeInUp'
 import { pressItems } from '../data/press'
 import './Press.css'
@@ -65,9 +66,7 @@ function Press() {
         </FadeInUp>
       </div>
 
-      <footer className="press-footer">
-        <p>©2025 by atelier ah</p>
-      </footer>
+      <Footer />
     </div>
   )
 }

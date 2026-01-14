@@ -31,10 +31,11 @@
 
 .header-logo {
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
   color: rgba(0, 0, 0, 0.6);
   margin: 0;
+  font-family: "Noto Serif", serif;
 }
 
 /* 모바일용 언어 토글 - 데스크탑에서 숨김 */
@@ -42,13 +43,13 @@
   display: none;
   text-decoration: none;
   font-size: 16px;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
   transition: color 0.3s ease;
 }
 
 /* 언어 토글 (nav 안) */
 .header-lang-toggle {
-  color: rgba(0, 0, 0, 0.6) !important;
+  color: rgba(0, 0, 0, 0.7) !important;
 }
 
 .header-nav {
@@ -62,18 +63,18 @@
   text-decoration: none;
   font-size: 16px;
   text-transform: lowercase;
-  font-weight: 400;
+  font-weight: 300;
   transition: color 0.3s ease;
 }
 
 /* Home 페이지 스타일 (기존 유지) */
 .header-nav-home a,
 .header-container-home .header-lang-toggle {
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .header-nav-home a:hover {
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
 }
 
 /* 다른 페이지 스타일 */
@@ -82,11 +83,11 @@
 }
 
 .header-nav-other a.active {
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .header-nav-other a:hover {
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.7);
 }
 
 /* 반응형 디자인 - 모바일 */

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import ImageSlider from '../components/ImageSlider'
 import FadeInUp from '../components/FadeInUp'
 import './Home.css'
@@ -62,35 +63,38 @@ function Home() {
     { id: 6, src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/01_gilchi_01.jpg", alt: 'Cafe interior' },
   ]
 
-  // 프로젝트 데이터
-  // 각 프로젝트는 sketch와 photo를 가지고 있음
-  // 어드민에서 프로젝트별로 스케치와 대표사진을 삽입할 예정
-  const projects = [
-    { id: 1, sketch: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_91.jpg", photo: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_01.jpg", title: 'Project 1' },
-    { id: 2, sketch: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/04_geumchon_91.jpg", photo: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/04_geumchon_03.jpg", title: 'Project 2' },
-    { id: 3, sketch: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/03_pub_91.jpg", photo: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/03_pub_01.jpg", title: 'Project 3' },
-    { id: 4, sketch: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/02_norrri_91.jpg", photo: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/02_norrri_02.jpg", title: 'Project 4' },
-    { id: 5, sketch: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/01_gilchi_91.jpg", photo: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/01_gilchi_01.jpg", title: 'Project 5' },
+  // 메인 페이지 스케치 이미지 리스트
+  // 각 행의 왼쪽에 표시될 스케치 이미지들
+  // src: 이미지 URL, link: 클릭 시 이동할 URL (선택사항)
+  const homeSketchImages = [
+    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/main-sketch-1.jpg", link: "/works/5" },
+    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/main-sketch-2.jpg", link: "/works/4" },
+    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/main-sketch-3.jpg", link: "/works/3" },
+    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/main-sketch-4.jpg", link: "/works/2" },
+    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/main-sketch-5.jpg", link: "/works/1" },
   ]
 
-  // 프로젝트 데이터를 그리드용 이미지 배열로 변환
-  // 패턴: sketch - photo / photo - sketch / sketch - photo / photo - sketch
-  const images = projects.flatMap((project, index) => {
-    const isEvenRow = index % 2 === 0
-    // 짝수 행(0, 2, 4...): sketch - photo
-    // 홀수 행(1, 3, 5...): photo - sketch
-    if (isEvenRow) {
-      return [
-        { id: `${project.id}-sketch`, src: project.sketch, alt: `${project.title} - Sketch`, type: 'sketch', projectId: project.id },
-        { id: `${project.id}-photo`, src: project.photo, alt: `${project.title} - Photo`, type: 'photo', projectId: project.id },
-      ]
-    } else {
-      return [
-        { id: `${project.id}-photo`, src: project.photo, alt: `${project.title} - Photo`, type: 'photo', projectId: project.id },
-        { id: `${project.id}-sketch`, src: project.sketch, alt: `${project.title} - Sketch`, type: 'sketch', projectId: project.id },
-      ]
-    }
-  })
+  // 메인 페이지 포토 이미지 리스트
+  // 각 행의 오른쪽에 표시될 사진 이미지들
+  // src: 이미지 URL, link: 클릭 시 이동할 URL (선택사항)
+  const homePhotoImages = [
+    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_01.jpg", link: "/works/5" },
+    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/04_geumchon_03.jpg", link: "/works/4" },
+    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/03_pub_01.jpg", link: "/works/3" },
+    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/02_norrri_02.jpg", link: "/works/2" },
+    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/01_gilchi_01.jpg", link: "/works/1" },
+  ]
+
+  // 스케치와 포토를 합쳐서 프로젝트 데이터 생성
+  // 같은 인덱스의 스케치와 포토가 한 행으로 표시됨
+  const projects = homeSketchImages.map((sketch, index) => ({
+    id: index + 1,
+    sketch: sketch.src,
+    sketchLink: sketch.link || null,
+    photo: homePhotoImages[index]?.src || '',
+    photoLink: homePhotoImages[index]?.link || null,
+    title: `Project ${index + 1}`
+  }))
 
   // 모바일 슬라이더 - 무한 루프를 위한 배열 복제
   const slideCount = projects.length
@@ -257,7 +261,7 @@ function Home() {
     <div className="home">
       {showSplash && (
         <div className={`home-splash ${fadeOut ? 'fade-out' : ''}`}>
-          <h1 className={`home-splash-text ${textFadeIn ? 'text-fade-in' : ''}`}>atelier ah</h1>
+          <h1 className={`home-splash-text ${textFadeIn ? 'text-fade-in' : ''}`}>simple horizontal totality through which all this goes</h1>
         </div>
       )}
       <Header />
@@ -282,7 +286,10 @@ function Home() {
 
         {/* Description Text */}
         <FadeInUp className="home-description" delay={300}>
-          <p>simple horizontal totality through which all this goes</p>
+          {/* PC용 텍스트 */}
+          <p className="home-description-pc">"Ah" is said to be an exclamation that bursts out when encountering primal beauty, at the moment when existence and perception align. It is the point where reason and emotion intersect, creating a momentary order beyond logic. atelier ah begins from such moments of 'Ah'. It exists as a horizontal language connecting the waves of pure imagery and the atmosphere inherent in space.</p>
+          {/* 모바일용 텍스트 */}
+          <p className="home-description-mobile">"Ah" is said to be an exclamation that bursts out when encountering primal beauty, at the moment when existence and perception align. It is the point where reason and emotion intersect, creating a momentary order beyond logic.</p>
         </FadeInUp>
       </FadeInUp>
 
@@ -290,7 +297,7 @@ function Home() {
       <FadeInUp>
         <ImageSlider 
           images={sliderImages}
-          videoUrl="https://youtu.be/_9SYv7nZx98?si=BVCSxjIARIH29euy"
+          /*videoUrl="https://youtu.be/_9SYv7nZx98?si=BVCSxjIARIH29euy"*/
           autoPlayInterval={8000}
           className="home-slider"
         />
@@ -298,18 +305,25 @@ function Home() {
 
       {/* Image Grid - 데스크탑용 */}
       <FadeInUp className="home-image-grid">
-        {images.map((image) => (
+        {projects.map((project) => (
           <FadeInUp 
-            key={image.id}
-            className={`home-image-item home-image-item-${image.type}`}
+            key={project.id}
+            className="home-image-row"
           >
-            {image.src ? (
-              <img src={image.src} alt={image.alt} />
-            ) : (
-              <div className="home-image-placeholder">
-                <span>{image.alt}</span>
-              </div>
-            )}
+            <div 
+              className="home-image-item home-image-item-sketch"
+              onClick={() => project.sketchLink && navigate(project.sketchLink)}
+              style={{ cursor: project.sketchLink ? 'pointer' : 'default' }}
+            >
+              <img src={project.sketch} alt={`${project.title} - Sketch`} />
+            </div>
+            <div 
+              className="home-image-item home-image-item-photo"
+              onClick={() => project.photoLink && navigate(project.photoLink)}
+              style={{ cursor: project.photoLink ? 'pointer' : 'default' }}
+            >
+              <img src={project.photo} alt={`${project.title} - Photo`} />
+            </div>
           </FadeInUp>
         ))}
       </FadeInUp>
@@ -343,10 +357,7 @@ function Home() {
         </div>
       </div>
 
-      {/* Footer */}
-        <footer className="home-footer">
-          <p>©2023 by atelier ah</p>
-        </footer>
+      <Footer />
     </div>
   )
 }

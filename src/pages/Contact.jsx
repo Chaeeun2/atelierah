@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import FadeInUp from '../components/FadeInUp'
 import './Contact.css'
 
@@ -49,12 +50,9 @@ function Contact() {
 
   const content = {
     ko: {
-      description: `"Ah"란 원초적인 아름다움을 마주했을 때,
-존재와 인식이 일치하는 순간에 터져 나오는 감탄사라 말한다.
-그것은 이성과 감성이 교차하는 지점이며, 논리를 넘어선 찰나의 질서를 만들어낸다.
-
-atelier ah는 이러한 'Ah'의 순간으로부터 출발한다.
-순수한 이미지의 파동과 공간에 내재된 분위기 사이를 잇는 하나의 수평적 언어로서 존재한다.`,
+      description: `atelier ah는 'Ah'의 순간으로부터 출발한다.
+순수한 이미지의 파동과 공간에 내재된 분위기 사이를 잇는
+하나의 수평적 언어로서 존재한다.`,
       contact: {
         email: {
           text: 'info@atelierah.com',
@@ -75,14 +73,9 @@ atelier ah는 이러한 'Ah'의 순간으로부터 출발한다.
       }
     },
     en: {
-      description: `"Ah" is said to be an exclamation that bursts out when encountering primal beauty,
-at the moment when existence and perception align.
-It is the point where reason and emotion intersect,
-creating a momentary order beyond logic.
-
-atelier ah begins from such moments of 'Ah'.
-It exists as a horizontal language connecting the waves
-of pure imagery and the atmosphere inherent in space.`,
+      description: `atelier ah begins from moments of 'Ah'.
+It exists as a horizontal language connecting the waves of pure imagery
+and the atmosphere inherent in space.`,
       contact: {
         email: {
           text: 'info@atelierah.com',
@@ -197,9 +190,7 @@ of pure imagery and the atmosphere inherent in space.`,
         </div>
       </div>
 
-      <footer className="contact-footer">
-        <p>©2025 by atelier ah</p>
-      </footer>
+      <Footer />
     </div>
   )
 }
