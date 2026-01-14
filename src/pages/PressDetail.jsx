@@ -16,9 +16,10 @@ function PressDetail() {
   const pressItem = pressItems.find(p => p.id === parseInt(id))
 
   // 페이지 타이틀 설정
+  // 페이지 타이틀 설정 (브라우저 탭용 - 영문만)
   useEffect(() => {
     if (pressItem) {
-      document.title = `${pressItem.project.en} - 아틀리에 아 atelier ah`
+      document.title = `${pressItem.project.en} - atelier ah`
     }
   }, [pressItem])
 

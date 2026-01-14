@@ -17,9 +17,10 @@ function ProjectDetail() {
   const project = projects.find(p => p.id === parseInt(id))
 
   // 페이지 타이틀 설정
+  // 페이지 타이틀 설정 (브라우저 탭용 - 영문만)
   useEffect(() => {
     if (project) {
-      document.title = `${project.title.en} - 아틀리에 아 atelier ah`
+      document.title = `${project.title.en} - atelier ah`
     }
   }, [project])
 

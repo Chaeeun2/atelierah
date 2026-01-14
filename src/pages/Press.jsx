@@ -11,9 +11,9 @@ function Press() {
   const navigate = useNavigate()
   const { language } = useLanguage()
 
-  // 페이지 타이틀 설정
+  // 페이지 타이틀 설정 (브라우저 탭용 - 영문만)
   useEffect(() => {
-    document.title = 'press - 아틀리에 아 atelier ah'
+    document.title = 'press - atelier ah'
   }, [])
 
   const handlePressClick = (item) => {
