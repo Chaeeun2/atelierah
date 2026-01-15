@@ -37,6 +37,7 @@
   display: block;
   transition: transform 0.6s ease-out;
   margin-bottom: 20dvh;
+  opacity: 0.9;
 }
 
 /* Description 텍스트 컨테이너 */
@@ -44,15 +45,15 @@
   position: absolute;
   bottom: 80px;
   width: 100%;
-  max-width: 1460px;
+  max-width: 1350px;
   padding: 0 40px;
   z-index: 3;
   left: 50%;
-  margin-left: -730px; /* max-width의 절반 (1460px / 2) */
+  margin-left: -675px; /* max-width의 절반 (1350px / 2) */
   box-sizing: border-box;
 }
 
-@media (max-width: 1460px) {
+@media (max-width: 1350px) {
   .about-description-container {
     margin-left: -50%;
     bottom: 40px;
@@ -102,7 +103,7 @@
 }
 
 .about-content {
-  max-width: 1460px;
+  max-width: 1350px;
   margin: 0 auto;
   padding: 100px 40px;
   position: relative;

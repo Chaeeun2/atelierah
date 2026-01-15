@@ -6,9 +6,9 @@
 }
 
 .project-detail-container {
-  max-width: 1460px;
+  max-width: 1350px;
   margin: 0 auto;
-  padding: 115px 40px;
+  padding: 115px 40px 0 40px;
 }
 
 /* 메인 이미지 슬라이더 */
@@ -315,7 +315,7 @@
 .project-detail-footer {
   text-align: center;
   padding: 30px 40px;
-  max-width: 1460px;
+  max-width: 1350px;
   margin: 0 auto;
 }
 

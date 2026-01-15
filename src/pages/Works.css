@@ -6,9 +6,9 @@
 }
 
 .works-container {
-  max-width: 1460px;
+  max-width: 1350px;
   margin: 0 auto;
-  padding: 135px 40px;
+  padding: 135px 40px 0 40px;
 }
 
 .works-grid {
@@ -91,7 +91,7 @@
 .works-footer {
   text-align: center;
   padding: 30px 40px;
-  max-width: 1460px;
+  max-width: 1350px;
   margin: 0 auto;
 }
 

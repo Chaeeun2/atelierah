@@ -1,6 +1,6 @@
 .image-slider {
   width: 100%;
-  max-width: 1460px;
+  max-width: 1350px;
   margin: 0 auto;
   padding: 40px;
   position: relative;
@@ -75,7 +75,7 @@
     padding: 20px;
   }
   .image-slider-counter {
-    font-size: 13px;
+    font-size: 12px;
     color: rgba(0, 0, 0, 0.5);
     font-weight: 300;
   }

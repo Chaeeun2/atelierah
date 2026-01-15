@@ -31,14 +31,14 @@
   font-family: "Roboto Slab", "Hahmlet", serif;
   font-size: 19px;
   color: rgba(0, 0, 0, 0.7);
-  font-weight: 300;
+  font-weight: 350;
   letter-spacing: -0.02em;
   padding: 0;
-  opacity: 0;
   transition: opacity 0.8s ease;
   text-align: center;
   width: 100%;
   margin: 0 20px;
+  opacity: 1;
 }
 
 .home-splash-text.text-fade-in {
@@ -46,19 +46,19 @@
 }
 
 .home-main-container {
-  height: calc(90dvh - 30px);
+  height: calc(92dvh - 30px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: 13vh;
   align-items: center;
-  margin-bottom: 10dvh;
+  margin-bottom: 8dvh;
 }
 
 /* Horizontal Line */
 .home-horizontal-line {
   width: 100%;
-  max-width: 1550px;
+  max-width: 1500px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,7 +76,7 @@
   text-align: center;
   padding: 00px 40px;
   margin: 0 auto;
-  max-width: 1460px;
+  max-width: 1350px;
 }
 
 .home-description p {
@@ -101,8 +101,8 @@
 }
 
 .image-slider-container {
-  aspect-ratio: auto !important;
-  height: 70vh;
+  aspect-ratio: 16 / 8 !important;
+  /*height: 68vh;*/
 }
 
 /* Image Grid */
@@ -110,9 +110,9 @@
   display: flex;
   flex-direction: column;
   gap: 50px;
-  padding: 40px;
-  max-width: 1460px;
-  margin: 100px auto;
+  padding: 40px 40px 0 40px;
+  max-width: 1350px;
+  margin: 40px auto 0 auto;
 }
 
 .home-image-row {
@@ -178,7 +178,7 @@
 .home-footer {
   text-align: center;
   padding: 30px 40px;
-  max-width: 1460px;
+  max-width: 1350px;
   margin: 0 auto;
 }
 
@@ -259,7 +259,7 @@
     display: block;
     width: 100%;
     overflow: hidden;
-    padding: 120px 0 120px 0;
+    padding: 150px 0 120px 0;
     cursor: grab;
   }
 

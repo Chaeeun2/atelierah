@@ -6,9 +6,9 @@
 }
 
 .press-container {
-  max-width: 1460px;
+  max-width: 1350px;
   margin: 0 auto;
-  padding: 150px 40px;
+  padding: 150px 40px 0 40px;
 }
 
 .press-grid {
@@ -64,7 +64,7 @@
 .press-footer {
   text-align: center;
   padding: 30px 40px;
-  max-width: 1460px;
+  max-width: 1350px;
   margin: 0 auto;
 }
 
