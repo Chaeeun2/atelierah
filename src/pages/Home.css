@@ -233,6 +233,11 @@
     width: 250%;
   }
 
+  .home-description {
+    margin-bottom: 0;
+    padding: 0 20px;
+  }
+
   .home-description p {
     font-size: 11px;
   }

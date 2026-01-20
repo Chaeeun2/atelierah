@@ -343,7 +343,16 @@ function Home() {
           }}
         >
           {infiniteProjects.map((project, index) => (
-            <div key={`${project.id}-${index}`} className="home-mobile-slide">
+            <div 
+              key={`${project.id}-${index}`} 
+              className="home-mobile-slide"
+              onClick={(e) => {
+                // 드래그가 아닌 클릭일 때만 링크 이동 (이동 거리 10px 이하)
+                if (Math.abs(startX - currentX) < 10 && project.photoLink) {
+                  navigate(project.photoLink)
+                }
+              }}
+            >
               <div className="home-mobile-slide-inner">
                 <div className="home-mobile-slide-sketch">
                   <img src={project.sketch} alt={`${project.title} - Sketch`} />
