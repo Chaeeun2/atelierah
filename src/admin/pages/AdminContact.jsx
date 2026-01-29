@@ -53,7 +53,6 @@ function AdminContact() {
         try {
             setInfoSaving(true)
             await saveContactInfo(contactInfo)
-            alert('Contact 정보가 저장되었습니다.')
         } catch (error) {
             console.error('Contact 정보 저장 실패:', error)
             alert('저장에 실패했습니다: ' + error.message)

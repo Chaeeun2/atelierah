@@ -18,7 +18,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import {
     getPressItems, addPressItem, updatePressItem, deletePressItem,
-    updatePressOrder, migrateLocalPressToFirebase
+    updatePressOrder
 } from '../../services/pressService'
 import { uploadImage, deleteImage, uploadMultipleImages, MAX_FILE_SIZE_PROJECT } from '../../services/imageService'
 
@@ -797,36 +797,6 @@ function AdminPress() {
         }
     }
 
-    const handleMigrate = async (force = false) => {
-        const message = force
-            ? '⚠️ 강제 마이그레이션: 기존 Firebase 데이터를 삭제하고 로컬 press.js 데이터로 덮어쓰시겠습니까?'
-            : '로컬 press.js 데이터를 Firebase로 마이그레이션하시겠습니까?'
-
-        if (!confirm(message)) return
-
-        setSaving(true)
-        try {
-            const result = await migrateLocalPressToFirebase(force)
-            if (result.success) {
-                alert(`마이그레이션 완료! ${result.count}개의 프레스가 저장되었습니다.`)
-                loadPressItems()
-            } else {
-                if (force) {
-                    alert('마이그레이션 실패: ' + result.message)
-                } else {
-                    if (confirm('이미 Firebase에 데이터가 있습니다. 강제로 덮어쓰시겠습니까?')) {
-                        handleMigrate(true)
-                    }
-                }
-            }
-        } catch (error) {
-            console.error('마이그레이션 실패:', error)
-            alert('마이그레이션에 실패했습니다: ' + error.message)
-        } finally {
-            setSaving(false)
-        }
-    }
-
     // 검색어로 필터링 (역순으로 표시)
     const filteredItems = [...pressItems].reverse().filter(item => {
         if (!searchTerm) return true
@@ -1061,13 +1031,6 @@ function AdminPress() {
                             )}
                         </div>
                         <button
-                            className="admin-button admin-button-secondary"
-                            onClick={() => handleMigrate(true)}
-                            disabled={saving}
-                        >
-                            {saving ? '동기화 중...' : '로컬 데이터 동기화'}
-                        </button>
-                        <button
                             className="admin-button admin-button-primary"
                             onClick={handleOpenAddModal}
                         >
@@ -1081,15 +1044,6 @@ function AdminPress() {
                     {filteredItems.length === 0 ? (
                         <div className="admin-empty-state">
                             <p>{searchTerm ? '검색 결과가 없습니다.' : '등록된 프레스가 없습니다.'}</p>
-                            {!searchTerm && pressItems.length === 0 && (
-                                <button
-                                    className="admin-button admin-button-primary"
-                                    onClick={handleMigrate}
-                                    disabled={saving}
-                                >
-                                    {saving ? '마이그레이션 중...' : '로컬 데이터 마이그레이션'}
-                                </button>
-                            )}
                         </div>
                     ) : (
                         <DndContext

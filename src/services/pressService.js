@@ -1,7 +1,6 @@
 // Press 데이터 관리 서비스
 import { doc, getDoc, setDoc, collection, getDocs, addDoc, updateDoc, deleteDoc, writeBatch } from 'firebase/firestore'
 import { db } from '../config/firebase'
-import { pressItems as localPressItems } from '../data/press'
 
 const COLLECTION_NAME = 'press'
 
@@ -94,49 +93,6 @@ export async function updatePressOrder(pressIds) {
         return true
     } catch (error) {
         console.error('프레스 순서 업데이트 실패:', error)
-        throw error
-    }
-}
-
-// 로컬 데이터를 Firebase로 마이그레이션
-export async function migrateLocalPressToFirebase(force = false) {
-    try {
-        const existingItems = await getPressItems()
-
-        if (existingItems.length > 0 && !force) {
-            console.log('이미 Firebase에 프레스 데이터가 있습니다:', existingItems.length, '개')
-            return { success: false, message: '이미 데이터가 존재합니다', count: existingItems.length }
-        }
-
-        // 강제 마이그레이션 시 기존 데이터 삭제
-        if (force && existingItems.length > 0) {
-            const deleteBatch = writeBatch(db)
-            existingItems.forEach(item => {
-                const docRef = doc(db, COLLECTION_NAME, String(item.id))
-                deleteBatch.delete(docRef)
-            })
-            await deleteBatch.commit()
-            console.log('기존 데이터 삭제 완료:', existingItems.length, '개')
-        }
-
-        // 로컬 프레스 데이터를 Firebase에 저장
-        const batch = writeBatch(db)
-
-        localPressItems.forEach((item, index) => {
-            const docRef = doc(db, COLLECTION_NAME, `press_${item.id}`)
-            batch.set(docRef, {
-                ...item,
-                order: index,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-            })
-        })
-
-        await batch.commit()
-        console.log('마이그레이션 완료:', localPressItems.length, '개 프레스')
-        return { success: true, message: '마이그레이션 완료', count: localPressItems.length }
-    } catch (error) {
-        console.error('마이그레이션 실패:', error)
         throw error
     }
 }

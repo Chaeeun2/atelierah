@@ -1,7 +1,6 @@
 // Works(Projects) 데이터 관리 서비스
 import { doc, getDoc, setDoc, collection, getDocs, addDoc, updateDoc, deleteDoc, writeBatch } from 'firebase/firestore'
 import { db } from '../config/firebase'
-import { projects as localProjects } from '../data/projects'
 
 const COLLECTION_NAME = 'projects'
 const SETTINGS_COLLECTION = 'settings'
@@ -205,51 +204,6 @@ export async function updateProjectOrder(projectIds) {
     return true
   } catch (error) {
     console.error('프로젝트 순서 업데이트 실패:', error)
-    throw error
-  }
-}
-
-// 로컬 데이터를 Firebase로 마이그레이션
-export async function migrateLocalDataToFirebase(force = false) {
-  try {
-    // 기존 데이터 확인
-    const existingProjects = await getProjects()
-    
-    if (existingProjects.length > 0 && !force) {
-      console.log('이미 Firebase에 프로젝트 데이터가 있습니다:', existingProjects.length, '개')
-      return { success: false, message: '이미 데이터가 존재합니다', count: existingProjects.length }
-    }
-
-    // 강제 마이그레이션 시 기존 데이터 삭제
-    if (force && existingProjects.length > 0) {
-      const deleteBatch = writeBatch(db)
-      existingProjects.forEach(project => {
-        const docRef = doc(db, COLLECTION_NAME, String(project.id))
-        deleteBatch.delete(docRef)
-      })
-      await deleteBatch.commit()
-      console.log('기존 데이터 삭제 완료:', existingProjects.length, '개')
-    }
-
-    // 로컬 프로젝트 데이터를 Firebase에 저장
-    const batch = writeBatch(db)
-    
-    localProjects.forEach((project, index) => {
-      // 문자열 ID를 사용하여 일관성 유지
-      const docRef = doc(db, COLLECTION_NAME, `project_${project.id}`)
-      batch.set(docRef, {
-        ...project,
-        order: index,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      })
-    })
-
-    await batch.commit()
-    console.log('마이그레이션 완료:', localProjects.length, '개 프로젝트')
-    return { success: true, message: '마이그레이션 완료', count: localProjects.length }
-  } catch (error) {
-    console.error('마이그레이션 실패:', error)
     throw error
   }
 }

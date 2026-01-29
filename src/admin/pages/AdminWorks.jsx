@@ -18,7 +18,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import {
     getProjects, addProject, updateProject, deleteProject, updateProjectOrder,
-    defaultProjectTemplate, migrateLocalDataToFirebase,
+    defaultProjectTemplate,
     getCategories, addCategory, updateCategory, deleteCategory
 } from '../../services/worksService'
 import { uploadImage, deleteImage, uploadMultipleImages, MAX_FILE_SIZE_PROJECT } from '../../services/imageService'
@@ -299,7 +299,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
 
         // 2MB 용량 체크
         if (file.size > MAX_FILE_SIZE_PROJECT) {
-            alert(`파일 크기가 2MB를 초과합니다. (${file.name})`)
+            alert(`파일 크기가 2MB를 초과합니다.`)
             e.target.value = ''
             return
         }
@@ -325,7 +325,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
         // 2MB 용량 체크
         const oversizedFiles = files.filter(f => f.size > MAX_FILE_SIZE_PROJECT)
         if (oversizedFiles.length > 0) {
-            alert(`다음 파일이 2MB를 초과합니다:\n${oversizedFiles.map(f => f.name).join('\n')}`)
+            alert(`파일 크기가 2MB를 초과합니다.`)
             e.target.value = ''
             return
         }
@@ -350,7 +350,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
         // 2MB 용량 체크
         const oversizedFiles = files.filter(f => f.size > MAX_FILE_SIZE_PROJECT)
         if (oversizedFiles.length > 0) {
-            alert(`다음 파일이 2MB를 초과합니다:\n${oversizedFiles.map(f => f.name).join('\n')}`)
+            alert(`파일 크기가 2MB를 초과합니다.`)
             e.target.value = ''
             return
         }
@@ -375,7 +375,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
         // 2MB 용량 체크
         const oversizedFiles = files.filter(f => f.size > MAX_FILE_SIZE_PROJECT)
         if (oversizedFiles.length > 0) {
-            alert(`다음 파일이 2MB를 초과합니다:\n${oversizedFiles.map(f => f.name).join('\n')}`)
+            alert(`파일 크기가 2MB를 초과합니다.`)
             e.target.value = ''
             return
         }
@@ -540,7 +540,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
         // 2MB 용량 체크
         const oversizedFiles = files.filter(f => f.size > MAX_FILE_SIZE_PROJECT)
         if (oversizedFiles.length > 0) {
-            alert(`다음 파일이 2MB를 초과합니다:\n${oversizedFiles.map(f => f.name).join('\n')}`)
+            alert(`파일 크기가 2MB를 초과합니다.`)
             e.target.value = ''
             return
         }
@@ -555,7 +555,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
             const filesToAdd = files.slice(0, availableSlots)
 
             if (filesToAdd.length === 0) {
-                alert('한 Row에 최대 3개까지만 첨부할 수 있습니다.')
+                alert('최대 3개까지만 첨부할 수 있습니다.')
                 return prev
             }
 
@@ -1392,37 +1392,6 @@ function AdminWorks() {
         }
     }
 
-    const handleMigrate = async (force = false) => {
-        const message = force
-            ? '⚠️ 강제 마이그레이션: 기존 Firebase 데이터를 삭제하고 로컬 projects.js 데이터로 덮어쓰시겠습니까?'
-            : '로컬 projects.js 데이터를 Firebase로 마이그레이션하시겠습니까?'
-
-        if (!confirm(message)) return
-
-        setSaving(true)
-        try {
-            const result = await migrateLocalDataToFirebase(force)
-            if (result.success) {
-                alert(`마이그레이션 완료! ${result.count}개의 프로젝트가 저장되었습니다.`)
-                loadProjects()
-            } else {
-                if (force) {
-                    alert('마이그레이션 실패: ' + result.message)
-                } else {
-                    // 데이터가 이미 있는 경우 강제 마이그레이션 제안
-                    if (confirm('이미 Firebase에 데이터가 있습니다. 강제로 덮어쓰시겠습니까?')) {
-                        handleMigrate(true)
-                    }
-                }
-            }
-        } catch (error) {
-            console.error('마이그레이션 실패:', error)
-            alert('마이그레이션에 실패했습니다: ' + error.message)
-        } finally {
-            setSaving(false)
-        }
-    }
-
     // 검색어로만 필터링 (역순으로 표시)
     const filteredProjects = [...projects].reverse().filter(project => {
         if (!searchTerm) return true
@@ -1699,13 +1668,6 @@ function AdminWorks() {
                         </div>
                         <button
                             className="admin-button admin-button-secondary"
-                            onClick={() => handleMigrate(true)}
-                            disabled={saving}
-                        >
-                            {saving ? '마이그레이션 중...' : '로컬 데이터 동기화'}
-                        </button>
-                        <button
-                            className="admin-button admin-button-secondary"
                             onClick={() => setIsCategoryModalOpen(true)}
                         >
                             카테고리 관리
@@ -1724,15 +1686,6 @@ function AdminWorks() {
                     {filteredProjects.length === 0 ? (
                         <div className="admin-empty-state">
                             <p>{searchTerm ? '검색 결과가 없습니다.' : '등록된 프로젝트가 없습니다.'}</p>
-                            {!searchTerm && projects.length === 0 && (
-                                <button
-                                    className="admin-button admin-button-primary"
-                                    onClick={handleMigrate}
-                                    disabled={saving}
-                                >
-                                    {saving ? '마이그레이션 중...' : '로컬 데이터 마이그레이션'}
-                                </button>
-                            )}
                         </div>
                     ) : (
                         <DndContext
