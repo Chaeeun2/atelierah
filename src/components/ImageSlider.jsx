@@ -215,7 +215,7 @@ function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, clas
   return (
     <div className={`image-slider ${className}`}>
       <div 
-        className="image-slider-container"
+        className={`image-slider-container ${className ? `${className}-container` : ''}`}
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
         style={{ cursor: isSingleImage ? 'default' : (isDragging ? 'grabbing' : 'grab') }}

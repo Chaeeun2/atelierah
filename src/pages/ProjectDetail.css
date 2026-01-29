@@ -337,6 +337,10 @@
   padding: 0;
 }
 
+.project-detail-mobile-sketch-slider .image-slider-item img {
+      object-fit: contain;
+}
+
 .project-detail-mobile-sketch-slider .image-slider-container {
   border-radius: 0;
 }
@@ -371,14 +375,14 @@
   }
 
   .project-detail-main-slider-component {
-    height: 33dvh;
+    height: 33svh;
     padding: 0 0 10px 0;
   }
 
   /* 모바일 스케치 슬라이더 스타일 */
   .project-detail-mobile-sketch-slider {
     aspect-ratio: 1 / 1;
-    max-height: 33dvh;
+    max-height: 33svh;
     width: auto;
   }
 

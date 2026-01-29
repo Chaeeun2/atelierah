@@ -3,10 +3,12 @@ import { useLanguage } from '../contexts/LanguageContext'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import FadeInUp from '../components/FadeInUp'
+import { getContactInfo, addInquiry, defaultContactInfo } from '../services/contactService'
 import './Contact.css'
 
 function Contact() {
   const { language } = useLanguage()
+  const [contactInfo, setContactInfo] = useState(defaultContactInfo)
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -14,10 +16,26 @@ function Contact() {
     message: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   // 페이지 타이틀 설정 (브라우저 탭용 - 영문만)
   useEffect(() => {
     document.title = 'contact - atelier ah'
+  }, [])
+
+  // Firebase에서 Contact 정보 로드
+  useEffect(() => {
+    async function loadContactData() {
+      try {
+        const data = await getContactInfo()
+        setContactInfo(data)
+      } catch (error) {
+        console.error('Contact 정보 로드 실패:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadContactData()
   }, [])
 
   const handleChange = (e) => {
@@ -31,13 +49,9 @@ function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
-    // TODO: DB 연동 시 이 부분에 API 호출 추가
-    console.log('Form submitted:', formData)
-    
-    // 임시로 1초 후 완료 처리
-    setTimeout(() => {
-      setIsSubmitting(false)
+
+    try {
+      await addInquiry(formData)
       setFormData({
         name: '',
         phone: '',
@@ -45,24 +59,27 @@ function Contact() {
         message: ''
       })
       alert(language === 'ko' ? '메시지가 전송되었습니다.' : 'Message sent successfully.')
-    }, 1000)
+    } catch (error) {
+      console.error('문의 전송 실패:', error)
+      alert(language === 'ko' ? '전송에 실패했습니다. 다시 시도해주세요.' : 'Failed to send. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const content = {
     ko: {
-      description: `atelier ah는 'Ah'의 순간으로부터 출발한다.
-순수한 이미지의 파동과 공간에 내재된 분위기 사이를 잇는
-하나의 수평적 언어로서 존재한다.`,
+      description: contactInfo.description?.ko || defaultContactInfo.description.ko,
       contact: {
         email: {
-          text: 'info@atelierah.com',
-          href: 'mailto:info@atelierah.com'
+          text: contactInfo.email || defaultContactInfo.email,
+          href: `mailto:${contactInfo.email || defaultContactInfo.email}`
         },
         instagram: {
-          text: 'instagram @atelierah_official',
-          href: 'https://www.instagram.com/atelierah_official'
+          text: `instagram ${contactInfo.instagram?.id || defaultContactInfo.instagram.id}`,
+          href: contactInfo.instagram?.url || defaultContactInfo.instagram.url
         },
-        address: '18-1, Jeongneung-ro 10ra-gil, Seongbuk-gu, Seoul, Republic of Korea'
+        address: contactInfo.address?.ko || defaultContactInfo.address.ko
       },
       form: {
         name: 'name',
@@ -73,19 +90,17 @@ function Contact() {
       }
     },
     en: {
-      description: `atelier ah begins from moments of 'Ah'.
-It exists as a horizontal language connecting the waves of pure imagery
-and the atmosphere inherent in space.`,
+      description: contactInfo.description?.en || defaultContactInfo.description.en,
       contact: {
         email: {
-          text: 'info@atelierah.com',
-          href: 'mailto:info@atelierah.com'
+          text: contactInfo.email || defaultContactInfo.email,
+          href: `mailto:${contactInfo.email || defaultContactInfo.email}`
         },
         instagram: {
-          text: 'instagram @atelierah_official',
-          href: 'https://www.instagram.com/atelierah_official'
+          text: `instagram ${contactInfo.instagram?.id || defaultContactInfo.instagram.id}`,
+          href: contactInfo.instagram?.url || defaultContactInfo.instagram.url
         },
-        address: '18-1, Jeongneung-ro 10ra-gil, Seongbuk-gu, Seoul, Republic of Korea'
+        address: contactInfo.address?.en || defaultContactInfo.address.en
       },
       form: {
         name: 'name',
@@ -99,6 +114,16 @@ and the atmosphere inherent in space.`,
 
   const currentContent = content[language]
 
+  if (loading) {
+    return (
+      <div className="contact">
+        <Header />
+        <div className="contact-container">
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="contact">
       <Header />
@@ -110,16 +135,16 @@ and the atmosphere inherent in space.`,
             <div className={`contact-description contact-description-${language}`}>
               {currentContent.description}
             </div>
-            
+
             <div className="contact-info">
-              <a 
+              <a
                 href={currentContent.contact.email.href}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {currentContent.contact.email.text}
               </a>
-              <a 
+              <a
                 href={currentContent.contact.instagram.href}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -196,4 +221,3 @@ and the atmosphere inherent in space.`,
 }
 
 export default Contact
-

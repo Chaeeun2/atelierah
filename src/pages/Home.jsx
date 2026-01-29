@@ -4,6 +4,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ImageSlider from '../components/ImageSlider'
 import FadeInUp from '../components/FadeInUp'
+import { getHomeData, defaultHomeData } from '../services/homeService'
 import './Home.css'
 
 function Home() {
@@ -11,7 +12,7 @@ function Home() {
   const [showSplash, setShowSplash] = useState(true)
   const [textFadeIn, setTextFadeIn] = useState(false)
   const [fadeOut, setFadeOut] = useState(false)
-  
+
   // 모바일 슬라이더 상태 (ImageSlider와 동일한 로직)
   const [mobileSlide, setMobileSlide] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
@@ -20,9 +21,26 @@ function Home() {
   const [isTransitioning, setIsTransitioning] = useState(true)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
+  // Firebase에서 가져온 이미지 데이터
+  const [homeData, setHomeData] = useState(null)
+
   // 페이지 타이틀 설정 (브라우저 탭용 - 영문만)
   useEffect(() => {
     document.title = 'atelier ah'
+  }, [])
+
+  // Firebase에서 Home 데이터 불러오기
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const data = await getHomeData()
+        setHomeData(data)
+      } catch (error) {
+        console.error('Home 데이터 로드 실패:', error)
+        setHomeData(defaultHomeData)
+      }
+    }
+    loadData()
   }, [])
 
   useEffect(() => {
@@ -46,53 +64,25 @@ function Home() {
       clearTimeout(removeTimer)
     }
   }, [])
+
   // Horizontal Line 이미지
-  // 절대경로(전체 URL)를 입력하세요
-  // 예: 'https://example.com/images/horizontal-line.jpg'
   const horizontalLineImage = "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/main_00.jpg"
 
-  // 슬라이더 이미지 데이터
-  // 이미지를 추가하려면 아래 src 속성에 절대경로(전체 URL)를 입력하세요
-  // 예: 'https://example.com/images/image1.jpg'
-  const sliderImages = [
-    { id: 1, src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/06_atelier_01.jpg", alt: 'Building exterior with vines' },
-    { id: 2, src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_01.jpg", alt: 'Interior hallway' },
-    { id: 3, src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/04_geumchon_03.jpg", alt: 'Abstract green squares' },
-    { id: 4, src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/03_pub_01.jpg", alt: 'Abstract painting' },
-    { id: 5, src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/02_norrri_02.jpg", alt: 'Cafe interior' },
-    { id: 6, src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/01_gilchi_01.jpg", alt: 'Cafe interior' },
-  ]
+  // 슬라이더 이미지 데이터 (Firebase에서 가져온 데이터 사용)
+  const sliderImages = (homeData?.sliderImages || defaultHomeData.sliderImages).map((img, index) => ({
+    id: img.id || index + 1,
+    src: img.src,
+    alt: `Slider image ${index + 1}`,
+    link: img.link
+  }))
 
-  // 메인 페이지 스케치 이미지 리스트
-  // 각 행의 왼쪽에 표시될 스케치 이미지들
-  // src: 이미지 URL, link: 클릭 시 이동할 URL (선택사항)
-  const homeSketchImages = [
-    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/main-sketch-1.jpg", link: "/works/5" },
-    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/main-sketch-2.jpg", link: "/works/4" },
-    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/main-sketch-3.jpg", link: "/works/3" },
-    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/main-sketch-4.jpg", link: "/works/2" },
-    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/main-sketch-5.jpg", link: "/works/1" },
-  ]
-
-  // 메인 페이지 포토 이미지 리스트
-  // 각 행의 오른쪽에 표시될 사진 이미지들
-  // src: 이미지 URL, link: 클릭 시 이동할 URL (선택사항)
-  const homePhotoImages = [
-    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/05_sorcetel_01.jpg", link: "/works/5" },
-    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/04_geumchon_03.jpg", link: "/works/4" },
-    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/03_pub_01.jpg", link: "/works/3" },
-    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/02_norrri_02.jpg", link: "/works/2" },
-    { src: "https://pub-4b716c374bc747948e9ac588042939de.r2.dev/01_gilchi_01.jpg", link: "/works/1" },
-  ]
-
-  // 스케치와 포토를 합쳐서 프로젝트 데이터 생성
-  // 같은 인덱스의 스케치와 포토가 한 행으로 표시됨
-  const projects = homeSketchImages.map((sketch, index) => ({
-    id: index + 1,
-    sketch: sketch.src,
-    sketchLink: sketch.link || null,
-    photo: homePhotoImages[index]?.src || '',
-    photoLink: homePhotoImages[index]?.link || null,
+  // 프로젝트 이미지 데이터 (스케치 + 포토 통합)
+  const projects = (homeData?.projectImages || defaultHomeData.projectImages).map((item, index) => ({
+    id: item.id || index + 1,
+    sketch: item.sketchSrc,
+    sketchLink: item.link || null,
+    photo: item.photoSrc,
+    photoLink: item.link || null,
     title: `Project ${index + 1}`
   }))
 
@@ -100,7 +90,7 @@ function Home() {
   const slideCount = projects.length
   const infiniteProjects = [...projects, ...projects, ...projects]
   const autoPlayInterval = 8000
-  
+
   // 초기 슬라이드 위치 설정 (중간에서 시작)
   useEffect(() => {
     setMobileSlide(slideCount)
@@ -147,7 +137,7 @@ function Home() {
 
     const handleGlobalMouseUp = () => {
       if (!isDragging) return
-      
+
       const diff = startX - currentX
       const threshold = 80
 
@@ -210,7 +200,7 @@ function Home() {
 
     const handleGlobalTouchEnd = () => {
       if (!isDragging) return
-      
+
       const diff = startX - currentX
       const threshold = 80
 
@@ -266,7 +256,7 @@ function Home() {
       )}
       <Header />
 
-      <FadeInUp 
+      <FadeInUp
         className="home-main-container"
         onClick={showSplash ? undefined : () => navigate('/about')}
         style={{ cursor: showSplash ? 'default' : 'pointer' }}
@@ -284,40 +274,53 @@ function Home() {
           )}
         </FadeInUp>
 
-        {/* Description Text */}
+        {/* Description Text (Firebase에서 불러옴) */}
         <FadeInUp className="home-description" delay={300}>
           {/* PC용 텍스트 */}
-          <p className="home-description-pc">"Ah" is said to be an exclamation that bursts out when encountering primal beauty, at the moment when existence and perception align. It is the point where reason and emotion intersect, creating a momentary order beyond logic. atelier ah begins from such moments of 'Ah'. It exists as a horizontal language connecting the waves of pure imagery and the atmosphere inherent in space.</p>
+          <p className="home-description-pc">{homeData?.sloganPc || defaultHomeData.sloganPc}</p>
           {/* 모바일용 텍스트 */}
-          <p className="home-description-mobile">"Ah" is said to be an exclamation that bursts out when encountering primal beauty, at the moment when existence and perception align. It is the point where reason and emotion intersect, creating a momentary order beyond logic.</p>
+          <p className="home-description-mobile">{homeData?.sloganMobile || defaultHomeData.sloganMobile}</p>
         </FadeInUp>
       </FadeInUp>
 
-      {/* Image Slider */}
+      {/* Image Slider or Video */}
       <FadeInUp>
-        <ImageSlider 
-          images={sliderImages}
-          /*videoUrl="https://youtu.be/_9SYv7nZx98?si=BVCSxjIARIH29euy"*/
-          autoPlayInterval={8000}
-          className="home-slider"
-        />
+        {homeData?.sliderType === 'video' && homeData?.sliderVideoUrl ? (
+          <div className="home-video-slider">
+            <div className="home-video-container">
+              <iframe
+                src={`https://www.youtube.com/embed/${extractYouTubeId(homeData.sliderVideoUrl)}?autoplay=1&mute=1&loop=1&playlist=${extractYouTubeId(homeData.sliderVideoUrl)}&playsinline=1&controls=0`}
+                title="YouTube video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        ) : (
+          <ImageSlider
+            images={sliderImages}
+            autoPlayInterval={8000}
+            className="home-slider"
+          />
+        )}
       </FadeInUp>
 
       {/* Image Grid - 데스크탑용 */}
       <FadeInUp className="home-image-grid">
         {projects.map((project) => (
-          <FadeInUp 
+          <FadeInUp
             key={project.id}
             className="home-image-row"
           >
-            <div 
+            <div
               className="home-image-item home-image-item-sketch"
               onClick={() => project.sketchLink && navigate(project.sketchLink)}
               style={{ cursor: project.sketchLink ? 'pointer' : 'default' }}
             >
               <img src={project.sketch} alt={`${project.title} - Sketch`} />
             </div>
-            <div 
+            <div
               className="home-image-item home-image-item-photo"
               onClick={() => project.photoLink && navigate(project.photoLink)}
               style={{ cursor: project.photoLink ? 'pointer' : 'default' }}
@@ -329,13 +332,13 @@ function Home() {
       </FadeInUp>
 
       {/* Mobile Slider - 모바일용 */}
-      <div 
+      <div
         className="home-mobile-slider"
         onTouchStart={handleTouchStart}
         onMouseDown={handleMouseDown}
         style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       >
-        <div 
+        <div
           className="home-mobile-slider-wrapper"
           style={{
             transform: `translateX(calc(-${mobileSlide * 60}vw + ${isDragging ? (currentX - startX) : 0}px))`,
@@ -343,8 +346,8 @@ function Home() {
           }}
         >
           {infiniteProjects.map((project, index) => (
-            <div 
-              key={`${project.id}-${index}`} 
+            <div
+              key={`${project.id}-${index}`}
               className="home-mobile-slide"
               onClick={(e) => {
                 // 드래그가 아닌 클릭일 때만 링크 이동 (이동 거리 10px 이하)
@@ -369,6 +372,25 @@ function Home() {
       <Footer />
     </div>
   )
+}
+
+// YouTube URL에서 video ID 추출
+function extractYouTubeId(url) {
+  if (!url) return ''
+
+  // youtu.be 형식
+  const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/)
+  if (shortMatch) return shortMatch[1]
+
+  // youtube.com/watch?v= 형식
+  const longMatch = url.match(/[?&]v=([a-zA-Z0-9_-]+)/)
+  if (longMatch) return longMatch[1]
+
+  // youtube.com/embed/ 형식
+  const embedMatch = url.match(/embed\/([a-zA-Z0-9_-]+)/)
+  if (embedMatch) return embedMatch[1]
+
+  return ''
 }
 
 export default Home

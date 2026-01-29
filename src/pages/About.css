@@ -133,7 +133,8 @@
 
   .about-description {
     text-align: center;
-    width: calc(100% - 60px);
+    width: calc(100% - 40px);
+    left: 20px;
   }
 
   .about-description-ko {

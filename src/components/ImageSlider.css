@@ -12,6 +12,7 @@
   aspect-ratio: 16 / 9;
   overflow: hidden;
   user-select: none;
+  max-height: 100vh;
 }
 
 .image-slider-wrapper {

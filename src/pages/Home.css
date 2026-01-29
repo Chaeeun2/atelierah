@@ -93,16 +93,41 @@
 /* PC용 텍스트: 기본 표시, 모바일에서 숨김 */
 .home-description-pc {
   display: block;
+  white-space: pre-line;
 }
 
 /* 모바일용 텍스트: 기본 숨김, 모바일에서 표시 */
 .home-description-mobile {
   display: none;
+  white-space: pre-line;
 }
 
-.image-slider-container {
-  aspect-ratio: 16 / 8 !important;
-  /*height: 68vh;*/
+.home-slider .image-slider-container {
+  aspect-ratio: 16 / 8;
+}
+
+/* Video Slider */
+.home-video-slider {
+  width: 100%;
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.home-video-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 8;
+  overflow: hidden;
+}
+
+.home-video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 /* Image Grid */
@@ -252,6 +277,10 @@
   }
 
   .home-slider {
+    padding: 50px 20px 20px 20px;
+  }
+
+  .home-video-slider {
     padding: 50px 20px 20px 20px;
   }
 
