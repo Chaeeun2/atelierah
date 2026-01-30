@@ -375,15 +375,14 @@
   }
 
   .project-detail-main-slider-component {
-    height: 33svh;
+    height: auto;
+    aspect-ratio: 16 / 11;
     padding: 0 0 10px 0;
   }
 
-  /* 모바일 스케치 슬라이더 스타일 */
-  .project-detail-mobile-sketch-slider {
-    aspect-ratio: 1 / 1;
-    max-height: 33svh;
-    width: auto;
+  .project-detail-mobile-sketch-slider, .project-detail-mobile-sketch-slider-container {
+    aspect-ratio: 16 / 13;
+    overflow: contain;
   }
 
   .project-detail-description-wrapper {
@@ -411,10 +410,6 @@
     margin-bottom: 30px;
     display: flex;
     justify-content: center;
-  }
-
-  .project-detail-mobile-sketch .image-slider-container {
-    aspect-ratio: 1 / 1;
   }
 
   .project-detail-mobile-sketch .image-slider-indicators {
