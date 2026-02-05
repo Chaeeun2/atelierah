@@ -12,3 +12,4 @@ bucket_name = "atelierah"  # 실제 R2 버킷 이름으로 변경
 R2_PUBLIC_URL = "https://pub-4b716c374bc747948e9ac588042939de.r2.dev"  # 실제 Public URL로 변경
 
 
+

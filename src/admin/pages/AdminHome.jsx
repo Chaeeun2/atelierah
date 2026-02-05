@@ -16,7 +16,7 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { getHomeData, saveHomeData, defaultHomeData } from '../../services/homeService'
-import { deleteImage, uploadImage } from '../../services/imageService'
+import { deleteImage, uploadImage, uploadVideo } from '../../services/imageService'
 import { projects as projectList } from '../../data/projects'
 import ImageUploader from '../../components/ImageUploader'
 import SortableImageItem from '../components/SortableImageItem'
@@ -98,7 +98,9 @@ function AdminHome() {
     // 슬라이더 관련 상태
     const [sliderType, setSliderType] = useState('image') // 'image' 또는 'video'
     const [sliderImages, setSliderImages] = useState([])
-    const [sliderVideoUrl, setSliderVideoUrl] = useState('')
+    const [sliderVideoSrc, setSliderVideoSrc] = useState('') // 업로드된 비디오 URL
+    const [sliderVideoFile, setSliderVideoFile] = useState(null) // 새로 선택한 비디오 파일
+    const [sliderVideoPending, setSliderVideoPending] = useState(false) // 업로드 대기 여부
 
     const [projectImages, setProjectImages] = useState([])
     const [loading, setLoading] = useState(true)
@@ -134,7 +136,7 @@ function AdminHome() {
                 setSloganMobile(data.sloganMobile || defaultHomeData.sloganMobile)
                 setSliderType(data.sliderType || 'image')
                 setSliderImages(data.sliderImages || defaultHomeData.sliderImages)
-                setSliderVideoUrl(data.sliderVideoUrl || '')
+                setSliderVideoSrc(data.sliderVideoSrc || '')
                 setProjectImages(data.projectImages || defaultHomeData.projectImages)
             } catch (error) {
                 console.error('데이터 로드 실패:', error)
@@ -142,7 +144,7 @@ function AdminHome() {
                 setSloganMobile(defaultHomeData.sloganMobile)
                 setSliderType('image')
                 setSliderImages(defaultHomeData.sliderImages)
-                setSliderVideoUrl('')
+                setSliderVideoSrc('')
                 setProjectImages(defaultHomeData.projectImages)
             } finally {
                 setLoading(false)
@@ -312,7 +314,25 @@ function AdminHome() {
                 })
             )
 
-            // 4. Firebase에 데이터 저장 (file 객체 제거)
+            // 4. 비디오 파일 업로드 (pending 상태인 경우)
+            let finalVideoSrc = sliderVideoSrc
+            if (sliderVideoPending && sliderVideoFile) {
+                try {
+                    finalVideoSrc = await uploadVideo(sliderVideoFile, 'video')
+                    // blob URL 해제
+                    if (sliderVideoSrc && sliderVideoSrc.startsWith('blob:')) {
+                        URL.revokeObjectURL(sliderVideoSrc)
+                    }
+                    setSliderVideoSrc(finalVideoSrc)
+                    setSliderVideoFile(null)
+                    setSliderVideoPending(false)
+                } catch (error) {
+                    console.error('비디오 업로드 실패:', error)
+                    throw new Error('비디오 업로드에 실패했습니다.')
+                }
+            }
+
+            // 5. Firebase에 데이터 저장 (file 객체 제거)
             const cleanSliderImages = finalSliderImages.map(({ file, isPending, ...rest }) => rest)
             const cleanProjectImages = uploadedProjectImages.map(({ sketchFile, photoFile, sketchPending, photoPending, ...rest }) => rest)
 
@@ -321,15 +341,15 @@ function AdminHome() {
                 sloganMobile,
                 sliderType,
                 sliderImages: cleanSliderImages,
-                sliderVideoUrl,
+                sliderVideoSrc: finalVideoSrc,
                 projectImages: cleanProjectImages
             })
 
-            // 5. state 업데이트
+            // 6. state 업데이트
             setSliderImages(finalSliderImages)
             setProjectImages(uploadedProjectImages)
 
-            // 6. 삭제 예정 목록 초기화
+            // 7. 삭제 예정 목록 초기화
             setPendingDeletes([])
 
             setSaveMessage('저장되었습니다!')
@@ -455,28 +475,61 @@ function AdminHome() {
                 {/* 영상 모드 */}
                 {sliderType === 'video' && (
                     <div className="admin-video-input-section">
-                        <div className="admin-form-group">
-                            <label>유튜브 URL</label>
-                            <input
-                                type="text"
-                                className="admin-input"
-                                placeholder="https://youtu.be/..."
-                                value={sliderVideoUrl}
-                                onChange={(e) => setSliderVideoUrl(e.target.value)}
-                            />
+                        <div className="admin-upload-button-container">
+                            <label className="admin-button admin-button-small" style={{ cursor: 'pointer' }}>
+                                영상 파일 선택
+                                <input
+                                    type="file"
+                                    accept="video/mp4,video/webm,video/quicktime"
+                                    style={{ display: 'none' }}
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0]
+                                        if (file) {
+                                            // 기존 비디오가 있고, 새 비디오로 교체하는 경우 삭제 예정 목록에 추가
+                                            if (sliderVideoSrc && !sliderVideoSrc.startsWith('blob:')) {
+                                                setPendingDeletes(prev => [...prev, sliderVideoSrc])
+                                            }
+                                            // blob URL 생성해서 미리보기용으로 사용
+                                            const blobUrl = URL.createObjectURL(file)
+                                            setSliderVideoSrc(blobUrl)
+                                            setSliderVideoFile(file)
+                                            setSliderVideoPending(true)
+                                        }
+                                    }}
+                                />
+                            </label>
+                            <span className="admin-upload-caption">mp4, webm, mov / 최대 100MB</span>
                         </div>
-                        {sliderVideoUrl && (
+                        {sliderVideoSrc && (
                             <div className="admin-video-preview">
                                 <p className="admin-preview-label">미리보기</p>
                                 <div className="admin-video-embed">
-                                    <iframe
-                                        src={`https://www.youtube.com/embed/${extractYouTubeId(sliderVideoUrl)}`}
-                                        title="YouTube video"
-                                        frameBorder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
+                                    <video
+                                        src={sliderVideoSrc}
+                                        controls
+                                        style={{ width: '100%', objectFit: 'contain' }}
                                     />
                                 </div>
+                                <button
+                                    type="button"
+                                    className="admin-button admin-button-small admin-button-danger"
+                                    style={{ marginTop: '8px' }}
+                                    onClick={() => {
+                                        // 기존 비디오 삭제 예정 목록에 추가
+                                        if (sliderVideoSrc && !sliderVideoSrc.startsWith('blob:')) {
+                                            setPendingDeletes(prev => [...prev, sliderVideoSrc])
+                                        }
+                                        // blob URL 해제
+                                        if (sliderVideoSrc && sliderVideoSrc.startsWith('blob:')) {
+                                            URL.revokeObjectURL(sliderVideoSrc)
+                                        }
+                                        setSliderVideoSrc('')
+                                        setSliderVideoFile(null)
+                                        setSliderVideoPending(false)
+                                    }}
+                                >
+                                    영상 삭제
+                                </button>
                             </div>
                         )}
                     </div>
@@ -544,25 +597,6 @@ function AdminHome() {
             />
         </div>
     )
-}
-
-// YouTube URL에서 video ID 추출
-function extractYouTubeId(url) {
-    if (!url) return ''
-
-    // youtu.be 형식
-    const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/)
-    if (shortMatch) return shortMatch[1]
-
-    // youtube.com/watch?v= 형식
-    const longMatch = url.match(/[?&]v=([a-zA-Z0-9_-]+)/)
-    if (longMatch) return longMatch[1]
-
-    // youtube.com/embed/ 형식
-    const embedMatch = url.match(/embed\/([a-zA-Z0-9_-]+)/)
-    if (embedMatch) return embedMatch[1]
-
-    return ''
 }
 
 export default AdminHome

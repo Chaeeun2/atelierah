@@ -61,3 +61,4 @@ function SortableImageItem({ img, index, type, onLinkChange, onDelete }) {
 export default SortableImageItem
 
 
+

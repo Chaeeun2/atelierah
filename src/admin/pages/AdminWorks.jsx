@@ -18,10 +18,9 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import {
     getProjects, addProject, updateProject, deleteProject, updateProjectOrder,
-    defaultProjectTemplate,
-    getCategories, addCategory, updateCategory, deleteCategory
+    defaultProjectTemplate
 } from '../../services/worksService'
-import { uploadImage, deleteImage, uploadMultipleImages, MAX_FILE_SIZE_PROJECT } from '../../services/imageService'
+import { uploadImage, deleteImage, uploadMultipleImages, uploadVideo, MAX_FILE_SIZE_PROJECT } from '../../services/imageService'
 
 // 드래그 가능한 미디어 아이템 (이미지)
 function SortableMediaItem({ id, imageUrl, index, onRemove }) {
@@ -141,21 +140,24 @@ function SortableProjectItem({ id, project, onEdit, onDelete }) {
 }
 
 // 프로젝트 추가/수정 모달
-function ProjectModal({ isOpen, onClose, onSave, project = null, loading, categories }) {
+function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
     const [formData, setFormData] = useState({
         titleKo: '',
         titleEn: '',
-        categoryKo: categories?.[0] || 'interior',
-        categoryEn: categories?.[0] || 'interior',
+        category: '',
         type: '',
         year: '',
         thumbnail: '',
         thumbnailFile: null,
         thumbnailPending: false,
+        thumbnailTitleKo: '',  // 썸네일 프로젝트명 (국문)
+        thumbnailTitleEn: '',  // 썸네일 프로젝트명 (영문)
         mainType: 'image',   // 'image' 또는 'video'
         mainImages: [],      // slider (메인이미지/대표이미지)
         mainFiles: [],
-        mainVideoUrl: '',    // 유튜브 영상 URL
+        mainVideoSrc: '',    // 업로드된 영상 URL
+        mainVideoFile: null, // 새로 선택한 영상 파일
+        mainVideoPending: false, // 업로드 대기 여부
         sketchImages: [],    // sketch (스케치)
         sketchFiles: [],
         layoutImages: [],    // layout (레이아웃)
@@ -176,14 +178,6 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
     const sketchInputRef = useRef(null)
     const layoutInputRef = useRef(null)
     const detailInputRefs = useRef([])
-
-    // 유튜브 ID 추출 함수
-    const extractYouTubeId = (url) => {
-        if (!url) return null
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
-        const match = url.match(regExp)
-        return (match && match[2].length === 11) ? match[2] : null
-    }
 
     // 드래그 앤 드롭 센서
     const mediaSensors = useSensors(
@@ -222,17 +216,20 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
             setFormData({
                 titleKo: project.title?.ko || '',
                 titleEn: project.title?.en || '',
-                categoryKo: project.category?.ko || categories?.[0] || 'interior',
-                categoryEn: project.category?.en || categories?.[0] || 'interior',
+                category: project.category?.ko || project.category?.en || project.category || '',
                 type: project.type || '',
                 year: project.year || '',
                 thumbnail: project.images?.thumbnail || '',
                 thumbnailFile: null,
                 thumbnailPending: false,
+                thumbnailTitleKo: project.thumbnailTitle?.ko || '',
+                thumbnailTitleEn: project.thumbnailTitle?.en || '',
                 mainType: sliderContent?.mediaType || 'image',
                 mainImages: project.images?.slider || [],
                 mainFiles: [],
-                mainVideoUrl: sliderContent?.videoUrl || '',
+                mainVideoSrc: sliderContent?.videoSrc || '',
+                mainVideoFile: null,
+                mainVideoPending: false,
                 sketchImages: project.images?.sketch || [],
                 sketchFiles: [],
                 layoutImages: project.images?.layout || [],
@@ -252,17 +249,20 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
             setFormData({
                 titleKo: '',
                 titleEn: '',
-                categoryKo: categories?.[0] || 'interior',
-                categoryEn: categories?.[0] || 'interior',
+                category: '',
                 type: '',
                 year: '',
                 thumbnail: '',
                 thumbnailFile: null,
                 thumbnailPending: false,
+                thumbnailTitleKo: '',
+                thumbnailTitleEn: '',
                 mainType: 'image',
                 mainImages: [],
                 mainFiles: [],
-                mainVideoUrl: '',
+                mainVideoSrc: '',
+                mainVideoFile: null,
+                mainVideoPending: false,
                 sketchImages: [],
                 sketchFiles: [],
                 layoutImages: [],
@@ -279,18 +279,10 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
                 photo: ''
             })
         }
-    }, [project, isOpen, categories])
+    }, [project, isOpen])
 
     const handleInputChange = (field, value) => {
         setFormData(prev => ({ ...prev, [field]: value }))
-    }
-
-    const handleCategoryChange = (value) => {
-        setFormData(prev => ({
-            ...prev,
-            categoryKo: value,
-            categoryEn: value
-        }))
     }
 
     const handleThumbnailSelect = (e) => {
@@ -649,7 +641,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
 
                             <div className="admin-form-row">
                                 <div className="admin-form-group">
-                                    <label>프로젝트명 (국문) *</label>
+                                    <label>프로젝트명 (국문)</label>
                                     <input
                                         type="text"
                                         className="admin-input"
@@ -685,15 +677,13 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
                                 </div>
                                 <div className="admin-form-group">
                                     <label>Category</label>
-                                    <select
+                                    <input
+                                        type="text"
                                         className="admin-input"
-                                        value={formData.categoryKo}
-                                        onChange={(e) => handleCategoryChange(e.target.value)}
-                                    >
-                                        {categories.map(cat => (
-                                            <option key={cat} value={cat}>{cat}</option>
-                                        ))}
-                                    </select>
+                                        value={formData.category}
+                                        onChange={(e) => handleInputChange('category', e.target.value)}
+                                        placeholder="interior"
+                                    />
                                 </div>
                             </div>
 
@@ -835,6 +825,28 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
                                     <img src={formData.thumbnail} alt="썸네일 이미지" className="admin-preview-thumb" />
                                 </div>
                             )}
+                            <div className="admin-form-row" style={{ marginTop: '15px' }}>
+                                <div className="admin-form-group">
+                                    <label>썸네일 프로젝트명 (국문)</label>
+                                    <input
+                                        type="text"
+                                        className="admin-input"
+                                        value={formData.thumbnailTitleKo}
+                                        onChange={(e) => handleInputChange('thumbnailTitleKo', e.target.value)}
+                                        placeholder="썸네일에 표시될 프로젝트명"
+                                    />
+                                </div>
+                                <div className="admin-form-group">
+                                    <label>썸네일 프로젝트명 (영문)</label>
+                                    <input
+                                        type="text"
+                                        className="admin-input"
+                                        value={formData.thumbnailTitleEn}
+                                        onChange={(e) => handleInputChange('thumbnailTitleEn', e.target.value)}
+                                        placeholder="Thumbnail project name"
+                                    />
+                                </div>
+                            </div>
                         </div>
 
                         {/* 메인이미지/영상 */}
@@ -921,25 +933,57 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
                             {/* 영상 모드 */}
                             {formData.mainType === 'video' && (
                                 <div className="admin-video-input-section">
-                                    <input
-                                        type="text"
-                                        className="admin-input"
-                                        placeholder="유튜브 URL (https://youtu.be/... 또는 https://www.youtube.com/watch?v=...)"
-                                        value={formData.mainVideoUrl}
-                                        onChange={(e) => handleInputChange('mainVideoUrl', e.target.value)}
-                                    />
-                                    {formData.mainVideoUrl && extractYouTubeId(formData.mainVideoUrl) && (
+                                    <div className="admin-upload-button-container">
+                                        <label className="admin-button admin-button-secondary" style={{ cursor: 'pointer' }}>
+                                            영상 파일 선택
+                                            <input
+                                                type="file"
+                                                accept="video/mp4,video/webm,video/quicktime"
+                                                style={{ display: 'none' }}
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0]
+                                                    if (file) {
+                                                        // blob URL 생성해서 미리보기용으로 사용
+                                                        const blobUrl = URL.createObjectURL(file)
+                                                        setFormData(prev => ({
+                                                            ...prev,
+                                                            mainVideoSrc: blobUrl,
+                                                            mainVideoFile: file,
+                                                            mainVideoPending: true
+                                                        }))
+                                                    }
+                                                }}
+                                            />
+                                        </label>
+                                        <span className="admin-upload-caption">mp4, webm, mov / 최대 100MB</span>
+                                    </div>
+                                    {formData.mainVideoSrc && (
                                         <div className="admin-video-preview" style={{ marginTop: '15px' }}>
                                             <div className="admin-video-embed">
-                                                <iframe
-                                                    src={`https://www.youtube.com/embed/${extractYouTubeId(formData.mainVideoUrl)}`}
-                                                    title="YouTube video"
-                                                    frameBorder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowFullScreen
-                                                    style={{ width: '100%', height: '200px', borderRadius: '8px' }}
+                                                <video
+                                                    src={formData.mainVideoSrc}
+                                                    controls
+                                                    style={{ width: '100%', objectFit: 'contain', borderRadius: '8px' }}
                                                 />
                                             </div>
+                                            <button
+                                                type="button"
+                                                className="admin-button admin-button-small admin-button-danger"
+                                                style={{ marginTop: '8px' }}
+                                                onClick={() => {
+                                                    if (formData.mainVideoSrc?.startsWith('blob:')) {
+                                                        URL.revokeObjectURL(formData.mainVideoSrc)
+                                                    }
+                                                    setFormData(prev => ({
+                                                        ...prev,
+                                                        mainVideoSrc: '',
+                                                        mainVideoFile: null,
+                                                        mainVideoPending: false
+                                                    }))
+                                                }}
+                                            >
+                                                영상 삭제
+                                            </button>
                                         </div>
                                     )}
                                 </div>
@@ -1136,224 +1180,13 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading, catego
     )
 }
 
-// 카테고리 관리 모달
-function CategoryManagementModal({ isOpen, onClose, categories, onCategoriesChange, onProjectsRefresh }) {
-    const [localCategories, setLocalCategories] = useState([...categories])
-    const [newCategory, setNewCategory] = useState('')
-    const [editingIndex, setEditingIndex] = useState(null)
-    const [editingValue, setEditingValue] = useState('')
-    const [saving, setSaving] = useState(false)
-
-    useEffect(() => {
-        if (isOpen) {
-            setLocalCategories([...categories])
-            setEditingIndex(null)
-            setEditingValue('')
-        }
-    }, [isOpen, categories])
-
-    const handleAddCategory = async () => {
-        const trimmed = newCategory.trim()
-        if (!trimmed) return
-        if (localCategories.includes(trimmed)) {
-            alert('이미 존재하는 카테고리입니다.')
-            return
-        }
-
-        setSaving(true)
-        try {
-            const result = await addCategory(trimmed)
-            if (result.success) {
-                setLocalCategories(result.categories)
-                onCategoriesChange(result.categories)
-                setNewCategory('')
-            } else {
-                alert(result.message)
-            }
-        } catch (error) {
-            console.error('카테고리 추가 실패:', error)
-            alert('카테고리 추가에 실패했습니다.')
-        } finally {
-            setSaving(false)
-        }
-    }
-
-    const handleDeleteCategory = async (categoryToDelete) => {
-        if (!confirm(`'${categoryToDelete}' 카테고리를 삭제하시겠습니까?`)) return
-
-        setSaving(true)
-        try {
-            const result = await deleteCategory(categoryToDelete)
-            if (result.success) {
-                setLocalCategories(result.categories)
-                onCategoriesChange(result.categories)
-            }
-        } catch (error) {
-            console.error('카테고리 삭제 실패:', error)
-            alert('카테고리 삭제에 실패했습니다.')
-        } finally {
-            setSaving(false)
-        }
-    }
-
-    const handleEditStart = (index, value) => {
-        setEditingIndex(index)
-        setEditingValue(value)
-    }
-
-    const handleEditSave = async (index) => {
-        const trimmed = editingValue.trim()
-        const oldName = localCategories[index]
-
-        if (!trimmed) {
-            handleEditCancel()
-            return
-        }
-        if (trimmed === oldName) {
-            handleEditCancel()
-            return
-        }
-        if (localCategories.includes(trimmed)) {
-            alert('이미 존재하는 카테고리명입니다.')
-            return
-        }
-
-        setSaving(true)
-        try {
-            const result = await updateCategory(oldName, trimmed)
-            if (result.success) {
-                setLocalCategories(result.categories)
-                onCategoriesChange(result.categories)
-                setEditingIndex(null)
-                setEditingValue('')
-                // 프로젝트 카테고리가 업데이트되었으면 프로젝트 목록 새로고침
-                if (result.updatedProjects > 0) {
-                    onProjectsRefresh?.()
-                }
-            } else {
-                alert(result.message)
-            }
-        } catch (error) {
-            console.error('카테고리 수정 실패:', error)
-            alert('카테고리 수정에 실패했습니다.')
-        } finally {
-            setSaving(false)
-        }
-    }
-
-    const handleEditCancel = () => {
-        setEditingIndex(null)
-        setEditingValue('')
-    }
-
-    if (!isOpen) return null
-
-    return (
-        <div className="admin-modal-overlay" onClick={onClose}>
-            <div className="admin-modal-content admin-modal-category" onClick={e => e.stopPropagation()}>
-                <div className="admin-modal-header">
-                    <h3>카테고리 관리</h3>
-                    <button className="admin-modal-close-btn" onClick={onClose}>×</button>
-                </div>
-                <div className="admin-modal-body">
-                    {/* 새 카테고리 추가 */}
-                    <div className="admin-category-section">
-                        <label className="admin-category-label">새 카테고리 추가</label>
-                        <div className="admin-category-add-form">
-                            <input
-                                type="text"
-                                className="admin-input"
-                                value={newCategory}
-                                onChange={(e) => setNewCategory(e.target.value)}
-                                placeholder="새 카테고리를 입력하세요"
-                                onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
-                                disabled={saving}
-                            />
-                            <button
-                                className="admin-button admin-button-primary"
-                                onClick={handleAddCategory}
-                                disabled={saving || !newCategory.trim()}
-                            >
-                                {saving ? '...' : '추가'}
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* 기존 카테고리 목록 */}
-                    <div className="admin-category-section">
-                        <label className="admin-category-label">기존 카테고리 목록</label>
-                        <ul className="admin-category-list">
-                            {localCategories.map((category, index) => (
-                                <li key={index} className="admin-category-item">
-                                    {editingIndex === index ? (
-                                        <div className="admin-category-edit-form">
-                                            <input
-                                                type="text"
-                                                className="admin-input"
-                                                value={editingValue}
-                                                onChange={(e) => setEditingValue(e.target.value)}
-                                                onKeyDown={(e) => {
-                                                    if (e.key === 'Enter') handleEditSave(index)
-                                                    if (e.key === 'Escape') handleEditCancel()
-                                                }}
-                                                autoFocus
-                                                disabled={saving}
-                                            />
-                                            <button
-                                                className="admin-button admin-button-small admin-button-primary"
-                                                onClick={() => handleEditSave(index)}
-                                                disabled={saving}
-                                            >
-                                                {saving ? '...' : '확인'}
-                                            </button>
-                                            <button
-                                                className="admin-button admin-button-small"
-                                                onClick={handleEditCancel}
-                                                disabled={saving}
-                                            >
-                                                취소
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <span className="admin-category-name">{category}</span>
-                                            <div className="admin-category-actions">
-                                                <button
-                                                    className="admin-button admin-button-small"
-                                                    onClick={() => handleEditStart(index, category)}
-                                                    disabled={saving}
-                                                >
-                                                    수정
-                                                </button>
-                                                <button
-                                                    className="admin-button admin-button-small admin-button-danger"
-                                                    onClick={() => handleDeleteCategory(category)}
-                                                    disabled={saving}
-                                                >
-                                                    삭제
-                                                </button>
-                                            </div>
-                                        </>
-                                    )}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
-
 function AdminWorks() {
     const [projects, setProjects] = useState([])
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
     const [editingProject, setEditingProject] = useState(null)
     const [searchTerm, setSearchTerm] = useState('')
-    const [categories, setCategories] = useState([])
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -1369,12 +1202,8 @@ function AdminWorks() {
     const loadData = async () => {
         setLoading(true)
         try {
-            const [projectsData, categoriesData] = await Promise.all([
-                getProjects(),
-                getCategories()
-            ])
+            const projectsData = await getProjects()
             setProjects(projectsData)
-            setCategories(categoriesData)
         } catch (error) {
             console.error('데이터 로드 실패:', error)
             alert('데이터를 불러오는데 실패했습니다.')
@@ -1445,6 +1274,20 @@ function AdminWorks() {
             } catch (error) {
                 console.error('썸네일 업로드 실패:', error)
                 throw new Error('썸네일 이미지 업로드에 실패했습니다.')
+            }
+        }
+
+        // 메인 영상 업로드 (pending 상태인 경우)
+        let mainVideoSrc = formData.mainVideoSrc
+        if (formData.mainVideoPending && formData.mainVideoFile) {
+            try {
+                mainVideoSrc = await uploadVideo(formData.mainVideoFile, 'works/video')
+                if (formData.mainVideoSrc?.startsWith('blob:')) {
+                    URL.revokeObjectURL(formData.mainVideoSrc)
+                }
+            } catch (error) {
+                console.error('메인 영상 업로드 실패:', error)
+                throw new Error('메인 영상 업로드에 실패했습니다.')
             }
         }
 
@@ -1539,7 +1382,7 @@ function AdminWorks() {
                 return {
                     ...item,
                     mediaType: formData.mainType,
-                    videoUrl: formData.mainType === 'video' ? formData.mainVideoUrl : ''
+                    videoSrc: formData.mainType === 'video' ? mainVideoSrc : ''
                 }
             }
             if (item.type === 'info') {
@@ -1576,9 +1419,13 @@ function AdminWorks() {
                 ko: formData.titleKo,
                 en: formData.titleEn
             },
+            thumbnailTitle: {
+                ko: formData.thumbnailTitleKo,
+                en: formData.thumbnailTitleEn
+            },
             category: {
-                ko: formData.categoryKo,
-                en: formData.categoryEn
+                ko: formData.category,
+                en: formData.category
             },
             year: formData.year,
             images: {
@@ -1667,12 +1514,6 @@ function AdminWorks() {
                             )}
                         </div>
                         <button
-                            className="admin-button admin-button-secondary"
-                            onClick={() => setIsCategoryModalOpen(true)}
-                        >
-                            카테고리 관리
-                        </button>
-                        <button
                             className="admin-button admin-button-primary"
                             onClick={handleOpenAddModal}
                         >
@@ -1722,17 +1563,8 @@ function AdminWorks() {
                     onSave={handleSaveProject}
                     project={editingProject}
                     loading={saving}
-                    categories={categories}
                 />
 
-                {/* 카테고리 관리 모달 */}
-                <CategoryManagementModal
-                    isOpen={isCategoryModalOpen}
-                    onClose={() => setIsCategoryModalOpen(false)}
-                    categories={categories}
-                    onCategoriesChange={setCategories}
-                    onProjectsRefresh={loadProjects}
-                />
             </div>
         </div>
     )

@@ -21,11 +21,11 @@ function ImageUploader({ onFilesSelect, maxFiles = 10 }) {
   const handleDrop = (e) => {
     e.preventDefault()
     setIsDragging(false)
-    
-    const files = Array.from(e.dataTransfer.files).filter(file => 
+
+    const files = Array.from(e.dataTransfer.files).filter(file =>
       ALLOWED_TYPES.includes(file.type)
     )
-    
+
     if (files.length > 0) {
       handleFiles(files)
     }
@@ -41,7 +41,7 @@ function ImageUploader({ onFilesSelect, maxFiles = 10 }) {
   const handleFiles = (files) => {
     // 파일 개수 제한
     const filesToProcess = files.slice(0, maxFiles)
-    
+
     // 파일 크기 검사
     const oversizedFiles = filesToProcess.filter(f => f.size > MAX_FILE_SIZE)
     if (oversizedFiles.length > 0) {
@@ -99,7 +99,7 @@ function ImageUploader({ onFilesSelect, maxFiles = 10 }) {
           onChange={handleFileSelect}
           style={{ display: 'none' }}
         />
-        
+
         <div className="upload-placeholder">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />

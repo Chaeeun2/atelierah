@@ -5,12 +5,28 @@ const R2_PUBLIC_URL = import.meta.env.VITE_CLOUDFLARE_R2_PUBLIC_URL
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB (메인페이지용)
 const MAX_FILE_SIZE_PROJECT = 2 * 1024 * 1024 // 2MB (프로젝트 페이지용)
+const MAX_VIDEO_SIZE = 100 * 1024 * 1024 // 100MB (비디오용)
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/webm', 'video/quicktime']
 
-// 파일 유효성 검사 (기본 5MB)
+// 이미지 파일 유효성 검사 (기본 5MB)
 export function validateFile(file, maxSize = MAX_FILE_SIZE) {
     if (!ALLOWED_TYPES.includes(file.type)) {
         throw new Error(`지원하지 않는 파일 형식입니다. (${file.name})`)
+    }
+
+    if (file.size > maxSize) {
+        const maxMB = maxSize / (1024 * 1024)
+        throw new Error(`파일 크기가 ${maxMB}MB를 초과합니다. (${file.name})`)
+    }
+
+    return true
+}
+
+// 비디오 파일 유효성 검사
+export function validateVideoFile(file, maxSize = MAX_VIDEO_SIZE) {
+    if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
+        throw new Error(`지원하지 않는 비디오 형식입니다. (${file.name}) - mp4, webm, mov만 지원`)
     }
 
     if (file.size > maxSize) {
@@ -44,6 +60,33 @@ export async function uploadImage(file, folder = 'slider', maxSize = MAX_FILE_SI
         return data.url
     } catch (error) {
         console.error('이미지 업로드 오류:', error)
+        throw new Error(`업로드 실패: ${error.message}`)
+    }
+}
+
+// 비디오 파일 업로드 (Workers API 사용)
+export async function uploadVideo(file, folder = 'video', maxSize = MAX_VIDEO_SIZE) {
+    validateVideoFile(file, maxSize)
+
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('folder', folder)
+
+    try {
+        const response = await fetch(`${WORKER_URL}/upload`, {
+            method: 'POST',
+            body: formData,
+        })
+
+        if (!response.ok) {
+            const errorData = await response.json()
+            throw new Error(errorData.error || '비디오 업로드 실패')
+        }
+
+        const data = await response.json()
+        return data.url
+    } catch (error) {
+        console.error('비디오 업로드 오류:', error)
         throw new Error(`업로드 실패: ${error.message}`)
     }
 }
@@ -108,4 +151,4 @@ export async function deleteImage(imageUrl) {
     }
 }
 
-export { MAX_FILE_SIZE, MAX_FILE_SIZE_PROJECT, ALLOWED_TYPES }
+export { MAX_FILE_SIZE, MAX_FILE_SIZE_PROJECT, MAX_VIDEO_SIZE, ALLOWED_TYPES, ALLOWED_VIDEO_TYPES }

@@ -285,15 +285,16 @@ function Home() {
 
       {/* Image Slider or Video */}
       <FadeInUp>
-        {homeData?.sliderType === 'video' && homeData?.sliderVideoUrl ? (
+        {homeData?.sliderType === 'video' && homeData?.sliderVideoSrc ? (
           <div className="home-video-slider">
             <div className="home-video-container">
-              <iframe
-                src={`https://www.youtube.com/embed/${extractYouTubeId(homeData.sliderVideoUrl)}?autoplay=1&mute=1&loop=1&playlist=${extractYouTubeId(homeData.sliderVideoUrl)}&playsinline=1&controls=0`}
-                title="YouTube video"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
+              <video
+                src={homeData.sliderVideoSrc}
+                autoPlay
+                muted
+                loop
+                playsInline
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
           </div>
@@ -372,25 +373,6 @@ function Home() {
       <Footer />
     </div>
   )
-}
-
-// YouTube URL에서 video ID 추출
-function extractYouTubeId(url) {
-  if (!url) return ''
-
-  // youtu.be 형식
-  const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/)
-  if (shortMatch) return shortMatch[1]
-
-  // youtube.com/watch?v= 형식
-  const longMatch = url.match(/[?&]v=([a-zA-Z0-9_-]+)/)
-  if (longMatch) return longMatch[1]
-
-  // youtube.com/embed/ 형식
-  const embedMatch = url.match(/embed\/([a-zA-Z0-9_-]+)/)
-  if (embedMatch) return embedMatch[1]
-
-  return ''
 }
 
 export default Home

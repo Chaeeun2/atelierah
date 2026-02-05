@@ -17,8 +17,8 @@ const defaultHomeData = {
     { id: 2, src: 'https://pub-4b716c374bc747948e9ac588042939de.r2.dev/04_geumchon_03.jpg', link: '/works/4' },
     { id: 3, src: 'https://pub-4b716c374bc747948e9ac588042939de.r2.dev/03_pub_01.jpg', link: '/works/3' },
   ],
-  // 영상 모드일 때 사용 (유튜브 URL)
-  sliderVideoUrl: '',
+  // 영상 모드일 때 사용 (업로드된 비디오 파일 URL)
+  sliderVideoSrc: '',
   // 스케치 + 포토를 하나의 프로젝트 이미지로 통합
   projectImages: [
     { 

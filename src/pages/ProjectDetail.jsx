@@ -81,6 +81,37 @@ function ProjectDetail() {
           src: img,
           alt: `${currentTitle} - Sketch ${imgIndex + 1}`
         }))
+
+        // 영상 모드인 경우
+        if (section.mediaType === 'video' && section.videoSrc) {
+          return (
+            <React.Fragment key={`slider-${index}`}>
+              <FadeInUp className="project-detail-main-slider">
+                <div className="project-detail-video-container">
+                  <video
+                    src={section.videoSrc}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="project-detail-video"
+                  />
+                </div>
+              </FadeInUp>
+              {mobileSketchImages.length > 0 && (
+                <FadeInUp className="project-detail-mobile-sketch">
+                  <ImageSlider
+                    images={mobileSketchImages}
+                    autoPlayInterval={5000}
+                    className="project-detail-mobile-sketch-slider"
+                  />
+                </FadeInUp>
+              )}
+            </React.Fragment>
+          )
+        }
+
+        // 이미지 모드 (기본)
         return (
           <React.Fragment key={`slider-${index}`}>
             <FadeInUp className="project-detail-main-slider">

@@ -72,7 +72,9 @@ function Works() {
                 </div>
                 <div className={`works-caption works-caption-${language} ${isOngoing ? 'works-caption-ongoing' : ''}`}>
                   <span className="works-title">
-                    {language === 'ko' ? project.title.ko : project.title.en}
+                    {language === 'ko' 
+                      ? (project.thumbnailTitle?.ko || project.title.ko) 
+                      : (project.thumbnailTitle?.en || project.title.en)}
                   </span>
                   <span className="works-category">
                     {language === 'ko' ? project.category.ko : project.category.en}, {project.year}
