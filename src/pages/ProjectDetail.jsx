@@ -142,7 +142,15 @@ function ProjectDetail() {
           location: language === 'ko' ? 'location' : 'location',
           client: language === 'ko' ? 'client' : 'client',
           design: language === 'ko' ? 'design' : 'design',
+          construction: language === 'ko' ? 'construction' : 'construction',
           photo: language === 'ko' ? 'photo' : 'photo'
+        }
+
+        // 값이 있는지 확인하는 헬퍼 함수
+        const hasValue = (value) => {
+          if (!value) return false
+          const val = language === 'ko' ? value.ko : value.en
+          return val && val.trim() !== ''
         }
 
         // sketch 이미지 사용
@@ -237,7 +245,7 @@ function ProjectDetail() {
                     <p className="project-detail-info-category">{currentCategory} project</p>
                     <div className="project-detail-info-group">
                       {['completion', 'usage', 'projectArea', 'location'].map((key) => {
-                        if (!section.details[key]) return null
+                        if (!hasValue(section.details[key])) return null
                         const value = section.details[key]
                         return (
                           <div key={key} className="project-detail-info-item">
@@ -252,8 +260,8 @@ function ProjectDetail() {
                       })}
                     </div>
                     <div className="project-detail-info-group">
-                      {['client', 'design', 'photo'].map((key) => {
-                        if (!section.details[key]) return null
+                      {['client', 'design', 'construction', 'photo'].map((key) => {
+                        if (!hasValue(section.details[key])) return null
                         const value = section.details[key]
                         return (
                           <div key={key} className="project-detail-info-item">

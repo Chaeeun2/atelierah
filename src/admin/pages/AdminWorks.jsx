@@ -171,7 +171,8 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
         location: '',
         client: '',
         design: '',
-        photo: ''
+        photo: '',
+        construction: ''
     })
     const thumbnailInputRef = useRef(null)
     const mainInputRef = useRef(null)
@@ -243,7 +244,8 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                 location: info?.details?.location?.ko || '',
                 client: info?.details?.client?.ko || '',
                 design: info?.details?.design?.ko || '',
-                photo: info?.details?.photo?.ko || ''
+                photo: info?.details?.photo?.ko || '',
+                construction: info?.details?.construction?.ko || ''
             })
         } else {
             setFormData({
@@ -276,7 +278,8 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                 location: '',
                 client: '',
                 design: '',
-                photo: ''
+                photo: '',
+                construction: ''
             })
         }
     }, [project, isOpen])
@@ -647,7 +650,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                         className="admin-input"
                                         value={formData.titleKo}
                                         onChange={(e) => handleInputChange('titleKo', e.target.value)}
-                                        placeholder="프로젝트명을 입력하세요"
+                                        placeholder="국문 프로젝트명"
                                         autoFocus
                                     />
                                 </div>
@@ -659,7 +662,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                         className="admin-input"
                                         value={formData.titleEn}
                                         onChange={(e) => handleInputChange('titleEn', e.target.value)}
-                                        placeholder="English project name"
+                                        placeholder="Project Title"
                                     />
                                 </div>
                             </div>
@@ -672,7 +675,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                         className="admin-input"
                                         value={formData.year}
                                         onChange={(e) => handleInputChange('year', e.target.value)}
-                                        placeholder="2024"
+                                        placeholder="작업 연도"
                                     />
                                 </div>
                                 <div className="admin-form-group">
@@ -682,7 +685,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                         className="admin-input"
                                         value={formData.category}
                                         onChange={(e) => handleInputChange('category', e.target.value)}
-                                        placeholder="interior"
+                                        placeholder="카테고리"
                                     />
                                 </div>
                             </div>
@@ -695,7 +698,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                         className="admin-input"
                                         value={formData.completion}
                                         onChange={(e) => handleInputChange('completion', e.target.value)}
-                                        placeholder="Dec, 2024"
+                                        placeholder="완공 날짜 (Dec, 2024)"
                                     />
                                 </div>
                                 <div className="admin-form-group">
@@ -705,7 +708,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                         className="admin-input"
                                         value={formData.usage}
                                         onChange={(e) => handleInputChange('usage', e.target.value)}
-                                        placeholder="cafe"
+                                        placeholder="공간 용도"
                                     />
                                 </div>
                             </div>
@@ -730,7 +733,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                         className="admin-input"
                                         value={formData.location}
                                         onChange={(e) => handleInputChange('location', e.target.value)}
-                                        placeholder="Seoul"
+                                        placeholder="지역"
                                     />
                                 </div>
                             </div>
@@ -743,7 +746,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                         className="admin-input"
                                         value={formData.client}
                                         onChange={(e) => handleInputChange('client', e.target.value)}
-                                        placeholder="클라이언트명"
+                                        placeholder="클라이언트"
                                     />
                                 </div>
 
@@ -754,7 +757,18 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                         className="admin-input"
                                         value={formData.design}
                                         onChange={(e) => handleInputChange('design', e.target.value)}
-                                        placeholder="atelierah"
+                                        placeholder="디자인"
+                                    />
+                                </div>
+
+                                                                                                <div className="admin-form-group">
+                                    <label>Construction</label>
+                                    <input
+                                        type="text"
+                                        className="admin-input"
+                                        value={formData.construction}
+                                        onChange={(e) => handleInputChange('construction', e.target.value)}
+                                        placeholder="시공사"
                                     />
                                 </div>
 
@@ -765,7 +779,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                         className="admin-input"
                                         value={formData.photo}
                                         onChange={(e) => handleInputChange('photo', e.target.value)}
-                                        placeholder="photographer"
+                                        placeholder="촬영"
                                     />
                                 </div>
                             </div>
@@ -1399,7 +1413,8 @@ function AdminWorks() {
                         location: { ko: formData.location, en: formData.location },
                         client: { ko: formData.client, en: formData.client },
                         design: { ko: formData.design, en: formData.design },
-                        photo: { ko: formData.photo, en: formData.photo }
+                        photo: { ko: formData.photo, en: formData.photo },
+                        construction: { ko: formData.construction, en: formData.construction }
                     }
                 }
             }
