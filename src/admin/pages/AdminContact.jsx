@@ -29,7 +29,7 @@ function AdminContact() {
             const data = await getContactInfo()
             setContactInfo(data)
         } catch (error) {
-            console.error('Contact 정보 로딩 실패:', error)
+            // error handling
         } finally {
             setLoading(false)
         }
@@ -42,7 +42,7 @@ function AdminContact() {
             const data = await getInquiries()
             setInquiries(data)
         } catch (error) {
-            console.error('문의사항 로딩 실패:', error)
+            // error handling
         } finally {
             setInquiriesLoading(false)
         }
@@ -54,7 +54,6 @@ function AdminContact() {
             setInfoSaving(true)
             await saveContactInfo(contactInfo)
         } catch (error) {
-            console.error('Contact 정보 저장 실패:', error)
             alert('저장에 실패했습니다: ' + error.message)
         } finally {
             setInfoSaving(false)
@@ -87,7 +86,6 @@ function AdminContact() {
             await deleteInquiry(inquiryId)
             setInquiries(prev => prev.filter(i => i.id !== inquiryId))
         } catch (error) {
-            console.error('문의사항 삭제 실패:', error)
             alert('삭제에 실패했습니다.')
         }
     }

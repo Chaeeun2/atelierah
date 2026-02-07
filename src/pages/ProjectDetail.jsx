@@ -26,7 +26,7 @@ function ProjectDetail() {
         const data = await getProject(projectId)
         setProject(data)
       } catch (error) {
-        console.error('프로젝트 로드 실패:', error)
+        // error handling
       } finally {
         setLoading(false)
       }

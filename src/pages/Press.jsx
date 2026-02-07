@@ -25,7 +25,7 @@ function Press() {
         const data = await getPressItems()
         setPressItems(data)
       } catch (error) {
-        console.error('프레스 로드 실패:', error)
+        // error handling
       } finally {
         setLoading(false)
       }

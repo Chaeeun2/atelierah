@@ -24,7 +24,6 @@ export async function getCategories() {
     await setDoc(docRef, { list: DEFAULT_CATEGORIES })
     return DEFAULT_CATEGORIES
   } catch (error) {
-    console.error('카테고리 목록 가져오기 실패:', error)
     return DEFAULT_CATEGORIES
   }
 }
@@ -43,7 +42,6 @@ export async function addCategory(categoryName) {
     
     return { success: true, categories: newCategories }
   } catch (error) {
-    console.error('카테고리 추가 실패:', error)
     throw error
   }
 }
@@ -89,7 +87,6 @@ export async function updateCategory(oldName, newName) {
     
     return { success: true, categories: newCategories, updatedProjects: updatedCount }
   } catch (error) {
-    console.error('카테고리 수정 실패:', error)
     throw error
   }
 }
@@ -105,7 +102,6 @@ export async function deleteCategory(categoryName) {
     
     return { success: true, categories: newCategories }
   } catch (error) {
-    console.error('카테고리 삭제 실패:', error)
     throw error
   }
 }
@@ -124,7 +120,6 @@ export async function getProjects() {
     // order 필드로 정렬
     return projects.sort((a, b) => (a.order || 0) - (b.order || 0))
   } catch (error) {
-    console.error('프로젝트 목록 가져오기 실패:', error)
     throw error
   }
 }
@@ -140,7 +135,6 @@ export async function getProject(projectId) {
     }
     return null
   } catch (error) {
-    console.error('프로젝트 가져오기 실패:', error)
     throw error
   }
 }
@@ -160,7 +154,6 @@ export async function addProject(projectData) {
     })
     return docRef.id
   } catch (error) {
-    console.error('프로젝트 추가 실패:', error)
     throw error
   }
 }
@@ -176,7 +169,6 @@ export async function updateProject(projectId, projectData) {
     })
     return true
   } catch (error) {
-    console.error('프로젝트 수정 실패:', error)
     throw error
   }
 }
@@ -187,7 +179,6 @@ export async function deleteProject(projectId) {
     await deleteDoc(doc(db, COLLECTION_NAME, String(projectId)))
     return true
   } catch (error) {
-    console.error('프로젝트 삭제 실패:', error)
     throw error
   }
 }
@@ -203,7 +194,6 @@ export async function updateProjectOrder(projectIds) {
     await batch.commit()
     return true
   } catch (error) {
-    console.error('프로젝트 순서 업데이트 실패:', error)
     throw error
   }
 }

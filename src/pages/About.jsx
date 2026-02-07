@@ -31,7 +31,6 @@ function About() {
         const data = await getAboutData()
         setAboutData(data)
       } catch (error) {
-        console.error('About 데이터 로드 실패:', error)
         setAboutData(defaultAboutData)
       }
     }

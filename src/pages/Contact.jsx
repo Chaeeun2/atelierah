@@ -30,7 +30,7 @@ function Contact() {
         const data = await getContactInfo()
         setContactInfo(data)
       } catch (error) {
-        console.error('Contact 정보 로드 실패:', error)
+        // error handling
       } finally {
         setLoading(false)
       }
@@ -60,7 +60,6 @@ function Contact() {
       })
       alert(language === 'ko' ? '메시지가 전송되었습니다.' : 'Message sent successfully.')
     } catch (error) {
-      console.error('문의 전송 실패:', error)
       alert(language === 'ko' ? '전송에 실패했습니다. 다시 시도해주세요.' : 'Failed to send. Please try again.')
     } finally {
       setIsSubmitting(false)

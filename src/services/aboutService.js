@@ -65,7 +65,6 @@ export async function getAboutData() {
       return defaultAboutData
     }
   } catch (error) {
-    console.error('About 데이터 가져오기 실패:', error)
     return defaultAboutData
   }
 }
@@ -80,7 +79,6 @@ export async function saveAboutData(data) {
     })
     return true
   } catch (error) {
-    console.error('About 데이터 저장 실패:', error)
     throw error
   }
 }

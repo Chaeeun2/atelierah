@@ -781,7 +781,6 @@ function AdminPress() {
             const data = await getPressItems()
             setPressItems(data)
         } catch (error) {
-            console.error('데이터 로드 실패:', error)
             alert('데이터를 불러오는데 실패했습니다.')
         } finally {
             setLoading(false)
@@ -793,7 +792,7 @@ function AdminPress() {
             const data = await getPressItems()
             setPressItems(data)
         } catch (error) {
-            console.error('프레스 로드 실패:', error)
+            // error handling
         }
     }
 
@@ -824,7 +823,6 @@ function AdminPress() {
         try {
             await updatePressOrder([...newItems].reverse().map(item => item.id))
         } catch (error) {
-            console.error('순서 저장 실패:', error)
             loadPressItems()
         }
     }
@@ -848,7 +846,6 @@ function AdminPress() {
                 imageUrl = await uploadImage(formData.imageFile, 'press', MAX_FILE_SIZE_PROJECT)
                 URL.revokeObjectURL(formData.image)
             } catch (error) {
-                console.error('이미지 업로드 실패:', error)
                 throw new Error('썸네일 이미지 업로드에 실패했습니다.')
             }
         }
@@ -865,7 +862,6 @@ function AdminPress() {
                     const results = await uploadMultipleImages(formData.heroFiles, 'press/hero', null, MAX_FILE_SIZE_PROJECT)
                     heroImages = [...heroImages, ...results.urls]
                 } catch (error) {
-                    console.error('히어로 이미지 업로드 실패:', error)
                     throw new Error('히어로 이미지 업로드에 실패했습니다.')
                 }
             }
@@ -925,7 +921,7 @@ function AdminPress() {
                         const uploadedUrl = await uploadImage(file, 'press/detail', MAX_FILE_SIZE_PROJECT)
                         processedImages.push(uploadedUrl)
                     } catch (error) {
-                        console.error('상세 이미지 업로드 실패:', error)
+                        // error handling
                     }
                 }
 
@@ -974,7 +970,6 @@ function AdminPress() {
             setIsModalOpen(false)
             setEditingPress(null)
         } catch (error) {
-            console.error('프레스 저장 실패:', error)
             alert('프레스 저장에 실패했습니다: ' + error.message)
         } finally {
             setSaving(false)
@@ -993,7 +988,6 @@ function AdminPress() {
             await deletePressItem(pressId)
             setPressItems(prev => prev.filter(p => p.id !== pressId))
         } catch (error) {
-            console.error('프레스 삭제 실패:', error)
             alert('프레스 삭제에 실패했습니다.')
         }
     }

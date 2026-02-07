@@ -29,7 +29,7 @@ function PressDetail() {
         }
         setPressItem(fetchedItem)
       } catch (error) {
-        console.error('프레스 데이터 로드 실패:', error)
+        // error handling
       } finally {
         setLoading(false)
       }

@@ -25,7 +25,7 @@ function Works() {
         const data = await getProjects()
         setProjects(data)
       } catch (error) {
-        console.error('프로젝트 로드 실패:', error)
+        // error handling
       } finally {
         setLoading(false)
       }

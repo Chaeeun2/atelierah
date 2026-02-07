@@ -38,7 +38,6 @@ export async function getContactInfo() {
         }
         return defaultContactInfo
     } catch (error) {
-        console.error('Contact 정보 가져오기 실패:', error)
         return defaultContactInfo
     }
 }
@@ -53,7 +52,6 @@ export async function saveContactInfo(data) {
         })
         return true
     } catch (error) {
-        console.error('Contact 정보 저장 실패:', error)
         throw error
     }
 }
@@ -72,7 +70,6 @@ export async function getInquiries() {
         })
         return inquiries
     } catch (error) {
-        console.error('문의사항 목록 가져오기 실패:', error)
         throw error
     }
 }
@@ -86,7 +83,6 @@ export async function addInquiry(data) {
         })
         return docRef.id
     } catch (error) {
-        console.error('문의사항 추가 실패:', error)
         throw error
     }
 }
@@ -97,7 +93,6 @@ export async function deleteInquiry(inquiryId) {
         await deleteDoc(doc(db, INQUIRIES_COLLECTION, inquiryId))
         return true
     } catch (error) {
-        console.error('문의사항 삭제 실패:', error)
         throw error
     }
 }

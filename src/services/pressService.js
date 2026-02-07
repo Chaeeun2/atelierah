@@ -15,7 +15,6 @@ export async function getPressItems() {
         // order 필드로 정렬
         return items.sort((a, b) => (a.order || 0) - (b.order || 0))
     } catch (error) {
-        console.error('프레스 목록 가져오기 실패:', error)
         throw error
     }
 }
@@ -31,7 +30,6 @@ export async function getPressItem(pressId) {
         }
         return null
     } catch (error) {
-        console.error('프레스 가져오기 실패:', error)
         throw error
     }
 }
@@ -50,7 +48,6 @@ export async function addPressItem(pressData) {
         })
         return docRef.id
     } catch (error) {
-        console.error('프레스 추가 실패:', error)
         throw error
     }
 }
@@ -65,7 +62,6 @@ export async function updatePressItem(pressId, pressData) {
         })
         return true
     } catch (error) {
-        console.error('프레스 수정 실패:', error)
         throw error
     }
 }
@@ -76,7 +72,6 @@ export async function deletePressItem(pressId) {
         await deleteDoc(doc(db, COLLECTION_NAME, String(pressId)))
         return true
     } catch (error) {
-        console.error('프레스 삭제 실패:', error)
         throw error
     }
 }
@@ -92,7 +87,6 @@ export async function updatePressOrder(pressIds) {
         await batch.commit()
         return true
     } catch (error) {
-        console.error('프레스 순서 업데이트 실패:', error)
         throw error
     }
 }

@@ -36,7 +36,6 @@ function Home() {
         const data = await getHomeData()
         setHomeData(data)
       } catch (error) {
-        console.error('Home 데이터 로드 실패:', error)
         setHomeData(defaultHomeData)
       }
     }

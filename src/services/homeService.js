@@ -57,21 +57,15 @@ const defaultHomeData = {
 // Home 데이터 가져오기
 export async function getHomeData() {
   try {
-    console.log('📥 Firebase에서 Home 데이터 가져오는 중...')
     const docRef = doc(db, COLLECTION_NAME, HOME_DOC_ID)
     const docSnap = await getDoc(docRef)
     
     if (docSnap.exists()) {
-      const data = docSnap.data()
-      console.log('✅ Firebase Home 데이터 로드 성공:', data)
-      return data
+      return docSnap.data()
     } else {
-      console.log('⚠️ Firebase에 Home 데이터 없음, 기본 데이터 사용')
       return defaultHomeData
     }
   } catch (error) {
-    console.error('❌ Home 데이터 가져오기 실패:', error)
-    // 에러 시 기본 데이터 반환
     return defaultHomeData
   }
 }
@@ -79,16 +73,13 @@ export async function getHomeData() {
 // Home 데이터 저장하기
 export async function saveHomeData(data) {
   try {
-    console.log('📤 Firebase에 Home 데이터 저장 중...', data)
     const docRef = doc(db, COLLECTION_NAME, HOME_DOC_ID)
     await setDoc(docRef, {
       ...data,
       updatedAt: new Date().toISOString()
     })
-    console.log('✅ Firebase Home 데이터 저장 성공')
     return true
   } catch (error) {
-    console.error('❌ Home 데이터 저장 실패:', error)
     throw error
   }
 }

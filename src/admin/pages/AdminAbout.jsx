@@ -44,7 +44,7 @@ function AdminAbout() {
                 setP3EnPc(data.paragraph3?.enPc || defaultAboutData.paragraph3.enPc)
                 setP3EnMobile(data.paragraph3?.enMobile || defaultAboutData.paragraph3.enMobile)
             } catch (error) {
-                console.error('데이터 로드 실패:', error)
+                // error handling
             } finally {
                 setLoading(false)
             }
@@ -82,7 +82,6 @@ function AdminAbout() {
             setTimeout(() => setSaveMessage(''), 3000)
         } catch (error) {
             setSaveMessage('저장에 실패했습니다.')
-            console.error('저장 실패:', error)
         } finally {
             setSaving(false)
         }

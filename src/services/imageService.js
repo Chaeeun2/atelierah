@@ -59,7 +59,6 @@ export async function uploadImage(file, folder = 'slider', maxSize = MAX_FILE_SI
         const data = await response.json()
         return data.url
     } catch (error) {
-        console.error('이미지 업로드 오류:', error)
         throw new Error(`업로드 실패: ${error.message}`)
     }
 }
@@ -86,7 +85,6 @@ export async function uploadVideo(file, folder = 'video', maxSize = MAX_VIDEO_SI
         const data = await response.json()
         return data.url
     } catch (error) {
-        console.error('비디오 업로드 오류:', error)
         throw new Error(`업로드 실패: ${error.message}`)
     }
 }
@@ -146,7 +144,6 @@ export async function deleteImage(imageUrl) {
 
         return true
     } catch (error) {
-        console.error('이미지 삭제 오류:', error)
         throw new Error(`삭제 실패: ${error.message}`)
     }
 }

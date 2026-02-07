@@ -139,7 +139,6 @@ function AdminHome() {
                 setSliderVideoSrc(data.sliderVideoSrc || '')
                 setProjectImages(data.projectImages || defaultHomeData.projectImages)
             } catch (error) {
-                console.error('데이터 로드 실패:', error)
                 setSloganPc(defaultHomeData.sloganPc)
                 setSloganMobile(defaultHomeData.sloganMobile)
                 setSliderType('image')
@@ -256,7 +255,7 @@ function AdminHome() {
                 try {
                     await deleteImage(imageUrl)
                 } catch (error) {
-                    console.error('R2 이미지 삭제 실패:', imageUrl, error)
+                    // error handling
                 }
             }
 
@@ -270,7 +269,6 @@ function AdminHome() {
                             URL.revokeObjectURL(img.src)
                             return { ...img, src: url, file: undefined, isPending: false }
                         } catch (error) {
-                            console.error('슬라이더 이미지 업로드 실패:', error)
                             return null // 업로드 실패한 이미지는 제거
                         }
                     }
@@ -293,7 +291,7 @@ function AdminHome() {
                             updatedItem.sketchFile = undefined
                             updatedItem.sketchPending = false
                         } catch (error) {
-                            console.error('스케치 이미지 업로드 실패:', error)
+                            // error handling
                         }
                     }
 
@@ -306,7 +304,7 @@ function AdminHome() {
                             updatedItem.photoFile = undefined
                             updatedItem.photoPending = false
                         } catch (error) {
-                            console.error('포토 이미지 업로드 실패:', error)
+                            // error handling
                         }
                     }
 
@@ -327,7 +325,6 @@ function AdminHome() {
                     setSliderVideoFile(null)
                     setSliderVideoPending(false)
                 } catch (error) {
-                    console.error('비디오 업로드 실패:', error)
                     throw new Error('비디오 업로드에 실패했습니다.')
                 }
             }
@@ -356,7 +353,6 @@ function AdminHome() {
             setTimeout(() => setSaveMessage(''), 3000)
         } catch (error) {
             setSaveMessage('저장에 실패했습니다.')
-            console.error('저장 실패:', error)
         } finally {
             setSaving(false)
         }

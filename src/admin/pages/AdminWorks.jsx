@@ -1219,7 +1219,6 @@ function AdminWorks() {
             const projectsData = await getProjects()
             setProjects(projectsData)
         } catch (error) {
-            console.error('데이터 로드 실패:', error)
             alert('데이터를 불러오는데 실패했습니다.')
         } finally {
             setLoading(false)
@@ -1231,7 +1230,7 @@ function AdminWorks() {
             const data = await getProjects()
             setProjects(data)
         } catch (error) {
-            console.error('프로젝트 로드 실패:', error)
+            // error handling
         }
     }
 
@@ -1262,7 +1261,6 @@ function AdminWorks() {
         try {
             await updateProjectOrder(newProjects.map(p => p.id))
         } catch (error) {
-            console.error('순서 저장 실패:', error)
             loadProjects()
         }
     }
@@ -1286,7 +1284,6 @@ function AdminWorks() {
                 thumbnailUrl = await uploadImage(formData.thumbnailFile, 'works', MAX_FILE_SIZE_PROJECT)
                 URL.revokeObjectURL(formData.thumbnail)
             } catch (error) {
-                console.error('썸네일 업로드 실패:', error)
                 throw new Error('썸네일 이미지 업로드에 실패했습니다.')
             }
         }
@@ -1300,7 +1297,6 @@ function AdminWorks() {
                     URL.revokeObjectURL(formData.mainVideoSrc)
                 }
             } catch (error) {
-                console.error('메인 영상 업로드 실패:', error)
                 throw new Error('메인 영상 업로드에 실패했습니다.')
             }
         }
@@ -1310,14 +1306,10 @@ function AdminWorks() {
         if (formData.mainFiles.length > 0) {
             try {
                 const { results, errors } = await uploadMultipleImages(formData.mainFiles, 'works/slider', null, MAX_FILE_SIZE_PROJECT)
-                if (errors.length > 0) {
-                    console.warn('일부 메인이미지 업로드 실패:', errors)
-                }
                 const newUrls = results.map(r => r.src)
                 mainUrls = [...mainUrls, ...newUrls]
                 formData.mainImages.filter(url => url.startsWith('blob:')).forEach(url => URL.revokeObjectURL(url))
             } catch (error) {
-                console.error('메인이미지 업로드 실패:', error)
                 throw new Error('메인이미지 업로드에 실패했습니다.')
             }
         }
@@ -1327,14 +1319,10 @@ function AdminWorks() {
         if (formData.sketchFiles.length > 0) {
             try {
                 const { results, errors } = await uploadMultipleImages(formData.sketchFiles, 'works/sketch', null, MAX_FILE_SIZE_PROJECT)
-                if (errors.length > 0) {
-                    console.warn('일부 스케치 이미지 업로드 실패:', errors)
-                }
                 const newUrls = results.map(r => r.src)
                 sketchUrls = [...sketchUrls, ...newUrls]
                 formData.sketchImages.filter(url => url.startsWith('blob:')).forEach(url => URL.revokeObjectURL(url))
             } catch (error) {
-                console.error('스케치 이미지 업로드 실패:', error)
                 throw new Error('스케치 이미지 업로드에 실패했습니다.')
             }
         }
@@ -1344,14 +1332,10 @@ function AdminWorks() {
         if (formData.layoutFiles.length > 0) {
             try {
                 const { results, errors } = await uploadMultipleImages(formData.layoutFiles, 'works/layout', null, MAX_FILE_SIZE_PROJECT)
-                if (errors.length > 0) {
-                    console.warn('일부 레이아웃 이미지 업로드 실패:', errors)
-                }
                 const newUrls = results.map(r => r.src)
                 layoutUrls = [...layoutUrls, ...newUrls]
                 formData.layoutImages.filter(url => url.startsWith('blob:')).forEach(url => URL.revokeObjectURL(url))
             } catch (error) {
-                console.error('레이아웃 이미지 업로드 실패:', error)
                 throw new Error('레이아웃 이미지 업로드에 실패했습니다.')
             }
         }
@@ -1371,7 +1355,7 @@ function AdminWorks() {
                         processedImages.push(uploadedUrl)
                         URL.revokeObjectURL(imageUrl)
                     } catch (error) {
-                        console.error('상세이미지 업로드 실패:', error)
+                        // error handling
                     }
                 } else if (imageUrl && !imageUrl.startsWith('blob:')) {
                     // 기존 URL 유지
@@ -1472,7 +1456,6 @@ function AdminWorks() {
             setIsModalOpen(false)
             setEditingProject(null)
         } catch (error) {
-            console.error('프로젝트 저장 실패:', error)
             alert('프로젝트 저장에 실패했습니다: ' + error.message)
         } finally {
             setSaving(false)
@@ -1491,7 +1474,6 @@ function AdminWorks() {
             await deleteProject(projectId)
             setProjects(prev => prev.filter(p => p.id !== projectId))
         } catch (error) {
-            console.error('프로젝트 삭제 실패:', error)
             alert('프로젝트 삭제에 실패했습니다.')
         }
     }
