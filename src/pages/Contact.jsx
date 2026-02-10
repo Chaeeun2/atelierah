@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
+import emailjs from '@emailjs/browser'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import FadeInUp from '../components/FadeInUp'
 import { getContactInfo, addInquiry, defaultContactInfo } from '../services/contactService'
 import './Contact.css'
+
+// EmailJS 설정
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 function Contact() {
   const { language } = useLanguage()
@@ -51,7 +57,31 @@ function Contact() {
     setIsSubmitting(true)
 
     try {
+      // Firebase에 문의 저장
       await addInquiry(formData)
+
+      // EmailJS로 이메일 전송
+      if (EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PUBLIC_KEY) {
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          {
+            timestamp: new Date().toLocaleString('ko-KR', { 
+              year: 'numeric', 
+              month: '2-digit', 
+              day: '2-digit', 
+              hour: '2-digit', 
+              minute: '2-digit' 
+            }),
+            contact_name: formData.name,
+            phone_number: formData.phone || '(미입력)',
+            email: formData.email,
+            inquiry_content: formData.message
+          },
+          EMAILJS_PUBLIC_KEY
+        )
+      }
+
       setFormData({
         name: '',
         phone: '',
