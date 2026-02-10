@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "npm run build && firebase deploy"
+    "sitemap": "node scripts/generate-sitemap.js",
+    "deploy": "npm run sitemap && npm run build && firebase deploy"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.975.0",

@@ -1,0 +1,9 @@
+# robots.txt for atelierah.com
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+
+# Sitemap
+Sitemap: https://atelierah.com/sitemap.xml
