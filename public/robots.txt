@@ -7,3 +7,6 @@ Disallow: /admin/*
 
 # Sitemap
 Sitemap: https://atelierah.com/sitemap.xml
+
+# RSS Feed
+# https://atelierah.com/rss.xml
