@@ -1,18 +1,22 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './ImageSlider.css'
 
 // 스켈레톤 이미지 컴포넌트
 function SkeletonImage({ src, alt }) {
   const [isLoaded, setIsLoaded] = useState(false)
+  const [hasError, setHasError] = useState(false)
 
   return (
-    <div className={`slider-skeleton-wrapper ${isLoaded ? 'loaded' : ''}`}>
-      {!isLoaded && <div className="slider-skeleton-box" />}
+    <div className={`slider-skeleton-wrapper ${isLoaded ? 'loaded' : ''} ${hasError ? 'error' : ''}`}>
+      {!isLoaded && !hasError && <div className="slider-skeleton-box" />}
+      {hasError && <div className="slider-skeleton-error" />}
       <img
         src={src}
         alt={alt}
         onLoad={() => setIsLoaded(true)}
-        style={{ opacity: isLoaded ? 1 : 0 }}
+        onError={() => setHasError(true)}
+        style={{ opacity: isLoaded && !hasError ? 1 : 0 }}
       />
     </div>
   )
@@ -48,7 +52,9 @@ function getYouTubeEmbedUrl(url) {
   return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&playsinline=1&controls=0`
 }
 
-function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, className = '' }) {
+function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, className = '', onSlideClick }) {
+  const navigate = useNavigate()
+  
   // 영상이 있으면 영상만 표시 (이미지 무시)
   const embedUrl = getYouTubeEmbedUrl(videoUrl)
   const slides = embedUrl 
@@ -67,6 +73,16 @@ function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, clas
   const [currentX, setCurrentX] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(true)
+  const dragDistance = useRef(0)
+
+  // 슬라이드 수가 변경될 때 currentSlide 재설정
+  useEffect(() => {
+    if (isSingleImage) {
+      setCurrentSlide(0)
+    } else {
+      setCurrentSlide(slideCount)
+    }
+  }, [slideCount, isSingleImage])
 
   // 자동 슬라이드 (드래그 중이 아닐 때만, 1장일 때는 비활성화)
   useEffect(() => {
@@ -92,14 +108,15 @@ function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, clas
     return () => clearInterval(interval)
   }, [slideCount, isAutoPlaying, isDragging, autoPlayInterval])
 
-  // 마우스 다운 이벤트 (1장일 때는 비활성화)
+  // 마우스 다운 이벤트
   const handleMouseDown = (e) => {
-    if (isSingleImage) return
+    if (isSingleImage) return // 1장일 때는 드래그 비활성화
     e.preventDefault()
     setIsDragging(true)
     setIsAutoPlaying(false)
     setStartX(e.pageX)
     setCurrentX(e.pageX)
+    dragDistance.current = 0
   }
 
   // 전역 마우스 이동 이벤트
@@ -108,6 +125,7 @@ function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, clas
       if (!isDragging) return
       e.preventDefault()
       setCurrentX(e.pageX)
+      dragDistance.current = Math.abs(startX - e.pageX)
     }
 
     const handleGlobalMouseUp = () => {
@@ -116,28 +134,32 @@ function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, clas
       const diff = startX - currentX
       const threshold = 80 // 최소 드래그 거리
 
-      if (Math.abs(diff) > threshold) {
+      if (Math.abs(diff) > threshold && !isSingleImage) {
         if (diff > 0) {
           // 오른쪽으로 드래그 (다음 슬라이드)
           const next = currentSlide + 1
+          setCurrentSlide(next)
+          
+          // 마지막 슬라이드를 넘어가면 애니메이션 후 중간으로 이동
           if (next >= slideCount * 2) {
-            // 마지막 슬라이드 다음으로 넘어갈 때는 transition 없이 중간으로 이동
-            setIsTransitioning(false)
-            setCurrentSlide(slideCount)
-            setTimeout(() => setIsTransitioning(true), 50)
-          } else {
-            setCurrentSlide(next)
+            setTimeout(() => {
+              setIsTransitioning(false)
+              setCurrentSlide(slideCount)
+              setTimeout(() => setIsTransitioning(true), 50)
+            }, 1000) // 트랜지션 시간(1s)과 동일
           }
         } else {
           // 왼쪽으로 드래그 (이전 슬라이드)
           const prev = currentSlide - 1
+          setCurrentSlide(prev)
+          
+          // 첫 번째 슬라이드 이전으로 가면 애니메이션 후 중간으로 이동
           if (prev < slideCount) {
-            // 첫 번째 슬라이드 이전으로 넘어갈 때는 transition 없이 중간으로 이동
-            setIsTransitioning(false)
-            setCurrentSlide(slideCount * 2 - 1)
-            setTimeout(() => setIsTransitioning(true), 50)
-          } else {
-            setCurrentSlide(prev)
+            setTimeout(() => {
+              setIsTransitioning(false)
+              setCurrentSlide(slideCount * 2 - 1)
+              setTimeout(() => setIsTransitioning(true), 50)
+            }, 1000) // 트랜지션 시간(1s)과 동일
           }
         }
       }
@@ -158,24 +180,24 @@ function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, clas
       document.removeEventListener('mousemove', handleGlobalMouseMove)
       document.removeEventListener('mouseup', handleGlobalMouseUp)
     }
-  }, [isDragging, startX, currentX, currentSlide, slideCount])
+  }, [isDragging, startX, currentX, currentSlide, slideCount, isSingleImage])
 
-  // 터치 이벤트 (모바일 지원, 1장일 때는 비활성화)
+  // 터치 이벤트 (모바일 지원)
   const handleTouchStart = (e) => {
-    if (isSingleImage) return
-    e.preventDefault()
+    if (isSingleImage) return // 1장일 때는 드래그 비활성화
     setIsDragging(true)
     setIsAutoPlaying(false)
     setStartX(e.touches[0].pageX)
     setCurrentX(e.touches[0].pageX)
+    dragDistance.current = 0
   }
 
   // 전역 터치 이벤트
   useEffect(() => {
     const handleGlobalTouchMove = (e) => {
       if (!isDragging) return
-      e.preventDefault()
       setCurrentX(e.touches[0].pageX)
+      dragDistance.current = Math.abs(startX - e.touches[0].pageX)
     }
 
     const handleGlobalTouchEnd = () => {
@@ -184,26 +206,32 @@ function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, clas
       const diff = startX - currentX
       const threshold = 80
 
-      if (Math.abs(diff) > threshold) {
+      if (Math.abs(diff) > threshold && !isSingleImage) {
         if (diff > 0) {
           // 오른쪽으로 드래그 (다음 슬라이드)
           const next = currentSlide + 1
+          setCurrentSlide(next)
+          
+          // 마지막 슬라이드를 넘어가면 애니메이션 후 중간으로 이동
           if (next >= slideCount * 2) {
-            setIsTransitioning(false)
-            setCurrentSlide(slideCount)
-            setTimeout(() => setIsTransitioning(true), 50)
-          } else {
-            setCurrentSlide(next)
+            setTimeout(() => {
+              setIsTransitioning(false)
+              setCurrentSlide(slideCount)
+              setTimeout(() => setIsTransitioning(true), 50)
+            }, 1000)
           }
         } else {
           // 왼쪽으로 드래그 (이전 슬라이드)
           const prev = currentSlide - 1
+          setCurrentSlide(prev)
+          
+          // 첫 번째 슬라이드 이전으로 가면 애니메이션 후 중간으로 이동
           if (prev < slideCount) {
-            setIsTransitioning(false)
-            setCurrentSlide(slideCount * 2 - 1)
-            setTimeout(() => setIsTransitioning(true), 50)
-          } else {
-            setCurrentSlide(prev)
+            setTimeout(() => {
+              setIsTransitioning(false)
+              setCurrentSlide(slideCount * 2 - 1)
+              setTimeout(() => setIsTransitioning(true), 50)
+            }, 1000)
           }
         }
       }
@@ -215,7 +243,7 @@ function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, clas
     }
 
     if (isDragging) {
-      document.addEventListener('touchmove', handleGlobalTouchMove, { passive: false })
+      document.addEventListener('touchmove', handleGlobalTouchMove, { passive: true })
       document.addEventListener('touchend', handleGlobalTouchEnd)
     }
 
@@ -223,7 +251,19 @@ function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, clas
       document.removeEventListener('touchmove', handleGlobalTouchMove)
       document.removeEventListener('touchend', handleGlobalTouchEnd)
     }
-  }, [isDragging, startX, currentX, currentSlide, slideCount])
+  }, [isDragging, startX, currentX, currentSlide, slideCount, isSingleImage])
+  
+  // 슬라이드 클릭 핸들러 (드래그가 아닌 클릭일 때만)
+  const handleSlideClick = (slide) => {
+    // 드래그 거리가 10px 이하일 때만 클릭으로 인식
+    if (dragDistance.current < 10 && slide.link) {
+      if (onSlideClick) {
+        onSlideClick(slide.link)
+      } else if (navigate) {
+        navigate(slide.link)
+      }
+    }
+  }
 
   if (slideCount === 0) {
     return null
@@ -245,7 +285,12 @@ function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, clas
           }}
         >
           {infiniteSlides.map((slide, index) => (
-            <div key={`${slide.id}-${index}`} className="image-slider-item">
+            <div 
+              key={`${slide.id}-${index}`} 
+              className="image-slider-item"
+              onClick={() => handleSlideClick(slide)}
+              style={{ cursor: slide.link ? 'pointer' : 'default' }}
+            >
               {slide.type === 'video' ? (
                 <iframe
                   src={slide.embedUrl}

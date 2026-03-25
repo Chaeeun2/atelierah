@@ -10,16 +10,19 @@ import './Home.css'
 // 이미지 로딩 상태를 관리하는 컴포넌트
 function SkeletonImage({ src, alt, className, onClick, style }) {
   const [isLoaded, setIsLoaded] = useState(false)
+  const [hasError, setHasError] = useState(false)
 
   return (
-    <div className={`skeleton-wrapper ${isLoaded ? 'loaded' : ''}`} onClick={onClick} style={style}>
-      {!isLoaded && <div className="skeleton-box" />}
+    <div className={`skeleton-wrapper ${isLoaded ? 'loaded' : ''} ${hasError ? 'error' : ''}`} onClick={onClick} style={style}>
+      {!isLoaded && !hasError && <div className="skeleton-box" />}
+      {hasError && <div className="skeleton-error" />}
       <img
         src={src}
         alt={alt}
         className={className}
         onLoad={() => setIsLoaded(true)}
-        style={{ opacity: isLoaded ? 1 : 0 }}
+        onError={() => setHasError(true)}
+        style={{ opacity: isLoaded && !hasError ? 1 : 0 }}
       />
     </div>
   )

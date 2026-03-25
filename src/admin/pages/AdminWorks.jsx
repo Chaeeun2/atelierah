@@ -1301,42 +1301,66 @@ function AdminWorks() {
             }
         }
 
-        // 메인이미지(슬라이더) 업로드 (2MB 제한)
-        let mainUrls = formData.mainImages.filter(url => !url.startsWith('blob:'))
-        if (formData.mainFiles.length > 0) {
-            try {
-                const { results, errors } = await uploadMultipleImages(formData.mainFiles, 'works/slider', null, MAX_FILE_SIZE_PROJECT)
-                const newUrls = results.map(r => r.src)
-                mainUrls = [...mainUrls, ...newUrls]
-                formData.mainImages.filter(url => url.startsWith('blob:')).forEach(url => URL.revokeObjectURL(url))
-            } catch (error) {
-                throw new Error('메인이미지 업로드에 실패했습니다.')
+        // 메인이미지(슬라이더) 업로드 - 순서 유지
+        const mainUrls = []
+        let mainFileIndex = 0
+        for (const imageUrl of formData.mainImages) {
+            if (imageUrl?.startsWith('blob:')) {
+                const file = formData.mainFiles[mainFileIndex]
+                mainFileIndex++
+                if (file) {
+                    try {
+                        const uploadedUrl = await uploadImage(file, 'works/slider', MAX_FILE_SIZE_PROJECT)
+                        mainUrls.push(uploadedUrl)
+                        URL.revokeObjectURL(imageUrl)
+                    } catch (error) {
+                        throw new Error('메인이미지 업로드에 실패했습니다.')
+                    }
+                }
+            } else if (imageUrl) {
+                mainUrls.push(imageUrl)
             }
         }
 
-        // 스케치 이미지 업로드 (2MB 제한)
-        let sketchUrls = formData.sketchImages.filter(url => !url.startsWith('blob:'))
-        if (formData.sketchFiles.length > 0) {
-            try {
-                const { results, errors } = await uploadMultipleImages(formData.sketchFiles, 'works/sketch', null, MAX_FILE_SIZE_PROJECT)
-                const newUrls = results.map(r => r.src)
-                sketchUrls = [...sketchUrls, ...newUrls]
-                formData.sketchImages.filter(url => url.startsWith('blob:')).forEach(url => URL.revokeObjectURL(url))
-            } catch (error) {
-                throw new Error('스케치 이미지 업로드에 실패했습니다.')
+        // 스케치 이미지 업로드 - 순서 유지
+        const sketchUrls = []
+        let sketchFileIndex = 0
+        for (const imageUrl of formData.sketchImages) {
+            if (imageUrl?.startsWith('blob:')) {
+                const file = formData.sketchFiles[sketchFileIndex]
+                sketchFileIndex++
+                if (file) {
+                    try {
+                        const uploadedUrl = await uploadImage(file, 'works/sketch', MAX_FILE_SIZE_PROJECT)
+                        sketchUrls.push(uploadedUrl)
+                        URL.revokeObjectURL(imageUrl)
+                    } catch (error) {
+                        throw new Error('스케치 이미지 업로드에 실패했습니다.')
+                    }
+                }
+            } else if (imageUrl) {
+                sketchUrls.push(imageUrl)
             }
         }
 
-        // 레이아웃 이미지 업로드 (2MB 제한)
-        let layoutUrls = formData.layoutImages.filter(url => !url.startsWith('blob:'))
-        if (formData.layoutFiles.length > 0) {
-            try {
-                const { results, errors } = await uploadMultipleImages(formData.layoutFiles, 'works/layout', null, MAX_FILE_SIZE_PROJECT)
-                const newUrls = results.map(r => r.src)
-                layoutUrls = [...layoutUrls, ...newUrls]
-                formData.layoutImages.filter(url => url.startsWith('blob:')).forEach(url => URL.revokeObjectURL(url))
-            } catch (error) {
-                throw new Error('레이아웃 이미지 업로드에 실패했습니다.')
+        // 레이아웃 이미지 업로드 - 순서 유지
+        const layoutUrls = []
+        let layoutFileIndex = 0
+        for (const imageUrl of formData.layoutImages) {
+            if (imageUrl?.startsWith('blob:')) {
+                const file = formData.layoutFiles[layoutFileIndex]
+                layoutFileIndex++
+                if (file) {
+                    try {
+                        const uploadedUrl = await uploadImage(file, 'works/layout', MAX_FILE_SIZE_PROJECT)
+                        layoutUrls.push(uploadedUrl)
+                        URL.revokeObjectURL(imageUrl)
+                    } catch (error) {
+                        throw new Error('레이아웃 이미지 업로드에 실패했습니다.')
+                    }
+                }
+            } else if (imageUrl) {
+                layoutUrls.push(imageUrl)
             }
         }
 
@@ -1344,20 +1368,26 @@ function AdminWorks() {
         const processedDetailRows = []
         for (const row of formData.detailRows) {
             const processedImages = []
+            let fileIndex = 0
+
             for (let i = 0; i < row.images.length; i++) {
                 const imageUrl = row.images[i]
-                const file = row.files[i]
 
-                if (file && imageUrl?.startsWith('blob:')) {
-                    // 새 파일 업로드
-                    try {
-                        const uploadedUrl = await uploadImage(file, 'works/detail', MAX_FILE_SIZE_PROJECT)
-                        processedImages.push(uploadedUrl)
-                        URL.revokeObjectURL(imageUrl)
-                    } catch (error) {
-                        // error handling
+                if (imageUrl?.startsWith('blob:')) {
+                    // 새 파일 업로드 (blob URL은 files 배열에서 순서대로 가져옴)
+                    const file = row.files[fileIndex]
+                    fileIndex++
+                    
+                    if (file) {
+                        try {
+                            const uploadedUrl = await uploadImage(file, 'works/detail', MAX_FILE_SIZE_PROJECT)
+                            processedImages.push(uploadedUrl)
+                            URL.revokeObjectURL(imageUrl)
+                        } catch (error) {
+                            // error handling
+                        }
                     }
-                } else if (imageUrl && !imageUrl.startsWith('blob:')) {
+                } else if (imageUrl) {
                     // 기존 URL 유지
                     processedImages.push(imageUrl)
                 }
@@ -1372,8 +1402,8 @@ function AdminWorks() {
 
         let content = existingProject?.content || defaultProjectTemplate.content
 
-        // 기존 content에서 detail 타입 제거
-        content = content.filter(item => item.type !== 'detail')
+        // 기존 content에서 detail 및 images 타입 제거 (상세이미지 관련)
+        content = content.filter(item => item.type !== 'detail' && item.type !== 'images')
 
         content = content.map(item => {
             if (item.type === 'slider') {
