@@ -1,6 +1,23 @@
 import { useState, useEffect } from 'react'
 import './ImageSlider.css'
 
+// 스켈레톤 이미지 컴포넌트
+function SkeletonImage({ src, alt }) {
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  return (
+    <div className={`slider-skeleton-wrapper ${isLoaded ? 'loaded' : ''}`}>
+      {!isLoaded && <div className="slider-skeleton-box" />}
+      <img
+        src={src}
+        alt={alt}
+        onLoad={() => setIsLoaded(true)}
+        style={{ opacity: isLoaded ? 1 : 0 }}
+      />
+    </div>
+  )
+}
+
 // 유튜브 URL을 embed URL로 변환 (자동재생, 음소거, 반복)
 function getYouTubeEmbedUrl(url) {
   if (!url) return null
@@ -239,7 +256,7 @@ function ImageSlider({ images = [], videoUrl = '', autoPlayInterval = 8000, clas
                   className="image-slider-video"
                 />
               ) : slide.src ? (
-                <img src={slide.src} alt={slide.alt} />
+                <SkeletonImage src={slide.src} alt={slide.alt} />
               ) : (
                 <div className="image-slider-placeholder">
                   <span>{slide.alt}</span>

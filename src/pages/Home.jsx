@@ -7,6 +7,24 @@ import FadeInUp from '../components/FadeInUp'
 import { getHomeData, defaultHomeData } from '../services/homeService'
 import './Home.css'
 
+// 이미지 로딩 상태를 관리하는 컴포넌트
+function SkeletonImage({ src, alt, className, onClick, style }) {
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  return (
+    <div className={`skeleton-wrapper ${isLoaded ? 'loaded' : ''}`} onClick={onClick} style={style}>
+      {!isLoaded && <div className="skeleton-box" />}
+      <img
+        src={src}
+        alt={alt}
+        className={className}
+        onLoad={() => setIsLoaded(true)}
+        style={{ opacity: isLoaded ? 1 : 0 }}
+      />
+    </div>
+  )
+}
+
 function Home() {
   const navigate = useNavigate()
   const [showSplash, setShowSplash] = useState(true)
@@ -265,7 +283,7 @@ function Home() {
         {/* Horizontal Line */}
         <FadeInUp className="home-horizontal-line">
           {horizontalLineImage ? (
-            <img src={horizontalLineImage} alt="horizontal line" className="home-horizontal-line-img" />
+            <SkeletonImage src={horizontalLineImage} alt="horizontal line" className="home-horizontal-line-img" />
           ) : (
             <div className="home-horizontal-line-placeholder">
               <span>horizontal line image</span>
@@ -318,14 +336,14 @@ function Home() {
               onClick={() => project.sketchLink && navigate(project.sketchLink)}
               style={{ cursor: project.sketchLink ? 'pointer' : 'default' }}
             >
-              <img src={project.sketch} alt={`${project.title} - Sketch`} />
+              <SkeletonImage src={project.sketch} alt={`${project.title} - Sketch`} />
             </div>
             <div
               className="home-image-item home-image-item-photo"
               onClick={() => project.photoLink && navigate(project.photoLink)}
               style={{ cursor: project.photoLink ? 'pointer' : 'default' }}
             >
-              <img src={project.photo} alt={`${project.title} - Photo`} />
+              <SkeletonImage src={project.photo} alt={`${project.title} - Photo`} />
             </div>
           </FadeInUp>
         ))}
@@ -358,10 +376,10 @@ function Home() {
             >
               <div className="home-mobile-slide-inner">
                 <div className="home-mobile-slide-sketch">
-                  <img src={project.sketch} alt={`${project.title} - Sketch`} />
+                  <SkeletonImage src={project.sketch} alt={`${project.title} - Sketch`} />
                 </div>
                 <div className="home-mobile-slide-photo">
-                  <img src={project.photo} alt={`${project.title} - Photo`} />
+                  <SkeletonImage src={project.photo} alt={`${project.title} - Photo`} />
                 </div>
               </div>
             </div>
