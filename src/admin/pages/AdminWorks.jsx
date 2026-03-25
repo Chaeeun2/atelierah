@@ -818,7 +818,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                 <input
                                     type="file"
                                     id="thumbnail-upload"
-                                    accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                                    accept="image/jpeg,image/png,image/webp,image/gif"
                                     onChange={handleThumbnailSelect}
                                     ref={thumbnailInputRef}
                                     style={{ display: 'none' }}
@@ -898,7 +898,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                         <input
                                             type="file"
                                             id="main-upload"
-                                            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                                            accept="image/jpeg,image/png,image/webp,image/gif"
                                             multiple
                                             onChange={handleMainFilesSelect}
                                             ref={mainInputRef}
@@ -1013,7 +1013,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                 <input
                                     type="file"
                                     id="sketch-upload"
-                                    accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                                    accept="image/jpeg,image/png,image/webp,image/gif"
                                     multiple
                                     onChange={handleSketchFilesSelect}
                                     ref={sketchInputRef}
@@ -1067,7 +1067,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                 <input
                                     type="file"
                                     id="layout-upload"
-                                    accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                                    accept="image/jpeg,image/png,image/webp,image/gif"
                                     multiple
                                     onChange={handleLayoutFilesSelect}
                                     ref={layoutInputRef}
@@ -1127,7 +1127,7 @@ function ProjectModal({ isOpen, onClose, onSave, project = null, loading }) {
                                             <input
                                                 type="file"
                                                 id={`detail-upload-${rowIndex}`}
-                                                accept="image/*"
+                                                accept="image/jpeg,image/png,image/webp,image/gif"
                                                 multiple
                                                 style={{ display: 'none' }}
                                                 onChange={(e) => handleDetailImagesSelect(rowIndex, e)}
